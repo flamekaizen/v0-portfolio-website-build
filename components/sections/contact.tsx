@@ -119,7 +119,7 @@ export function Contact() {
               {[
                 { icon: Mail, label: "Email", value: "kaizentechrk@gmail.com" },
                 { icon: Phone, label: "Phone", value: "+91-8102283703" },
-                { icon: MapPin, label: "Location", value: "Bhagalpur, India" },
+                { icon: MapPin, label: "Location", value: "Patna, Bihar, India" },
               ].map((item, index) => (
                 <motion.div
                   key={index}
