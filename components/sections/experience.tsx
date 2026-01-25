@@ -2,48 +2,32 @@
 
 import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
-import { ScrollReveal } from "@/components/animations/scroll-reveal"
-import { TextReveal } from "@/components/animations/text-reveal"
 
 const experiences = [
   {
-    title: "Senior Full-Stack Developer",
-    company: "TechCorp Inc.",
-    period: "2022 - Present",
+    title: "Student Researcher",
+    company: "Indian Institute of Technology Kharagpur",
+    period: "May 2025 – Jun 2025",
     description:
-      "Leading development of scalable web applications using modern technologies. Mentoring junior developers and architecting complex systems.",
-    achievements: ["Increased app performance by 40%", "Led team of 5 developers", "Implemented CI/CD pipeline"],
+      "Designed and optimized 2.45 GHz flexible textile antennas for wearable WBAN applications. Validated designs using HFSS, ADS, and MATLAB.",
+    achievements: ["Achieved |S11| < 20 dB", "Enhanced radiation efficiency", "Safety verified (SAR < 1.6 W/kg)"],
   },
   {
-    title: "Frontend Developer",
-    company: "Digital Agency",
-    period: "2020 - 2022",
+    title: "Student Researcher",
+    company: "Space Applications Centre (ISRO), Ahmedabad",
+    period: "May 2024 – Jul 2024",
     description:
-      "Developed responsive web applications and collaborated with design teams to create exceptional user experiences.",
-    achievements: ["Built 20+ client websites", "Improved conversion rates by 25%", "Established design system"],
-  },
-  {
-    title: "Junior Developer",
-    company: "StartupXYZ",
-    period: "2019 - 2020",
-    description:
-      "Started my professional journey building features for a growing SaaS platform and learning industry best practices.",
-    achievements: ["Contributed to 50+ features", "Reduced bug reports by 30%", "Learned agile methodologies"],
+      "Developed deep learning-based image super-resolution pipelines (FSRCNN, ESPCN, VDSR, SRResNet) for satellite imagery enhancement.",
+    achievements: ["Deployed on Raspberry Pi 4B", "Achieved PSNR ~35 dB", "SSIM > 0.96 for debris analysis"],
   },
 ]
 
 const education = [
   {
-    degree: "Bachelor of Computer Science",
-    school: "University of Technology",
-    period: "2015 - 2019",
-    description: "Focused on software engineering, algorithms, and web technologies. Graduated with honors.",
-  },
-  {
-    degree: "Full-Stack Web Development",
-    school: "Coding Bootcamp",
-    period: "2019",
-    description: "Intensive program covering modern web development stack and industry practices.",
+    degree: "B.Tech. in Electronics and Communication Engineering",
+    school: "Indian Institute of Information Technology Bhagalpur",
+    period: "2022 – 2026",
+    description: "Specializing in ECE with a strong focus on AI, Robotics, and VLSI Design. Maintained a CGPA of 9.46/10.",
   },
 ]
 
@@ -60,22 +44,39 @@ export function Experience() {
       </div>
 
       <div className="container mx-auto px-6 relative">
-        <ScrollReveal direction="up" className="text-center mb-16">
-          <TextReveal className="text-3xl md:text-4xl font-bold mb-4">Experience & Education</TextReveal>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className="text-3xl md:text-4xl font-bold mb-4">Experience & Education</h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             My professional journey and educational background in technology
           </p>
-        </ScrollReveal>
+        </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Experience */}
           <div>
-            <ScrollReveal direction="left">
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
               <h3 className="text-2xl font-semibold mb-8 text-accent">Work Experience</h3>
-            </ScrollReveal>
+            </motion.div>
             <div className="space-y-6">
               {experiences.map((exp, index) => (
-                <ScrollReveal key={index} direction="left" delay={index * 0.1}>
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
                   <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
                     <Card className="p-6 card-hover relative overflow-hidden">
                       {/* Timeline line */}
@@ -114,19 +115,30 @@ export function Experience() {
                       </ul>
                     </Card>
                   </motion.div>
-                </ScrollReveal>
+                </motion.div>
               ))}
             </div>
           </div>
 
           {/* Education */}
           <div>
-            <ScrollReveal direction="right">
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
               <h3 className="text-2xl font-semibold mb-8 text-accent">Education</h3>
-            </ScrollReveal>
+            </motion.div>
             <div className="space-y-6">
               {education.map((edu, index) => (
-                <ScrollReveal key={index} direction="right" delay={index * 0.1}>
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                >
                   <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
                     <Card className="p-6 card-hover relative overflow-hidden">
                       {/* Timeline line */}
@@ -150,7 +162,7 @@ export function Experience() {
                       <p className="text-muted-foreground leading-relaxed">{edu.description}</p>
                     </Card>
                   </motion.div>
-                </ScrollReveal>
+                </motion.div>
               ))}
             </div>
           </div>

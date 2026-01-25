@@ -10,27 +10,27 @@ import { GradientText } from "@/components/ui/gradient-text"
 const skills = [
   {
     icon: Code,
-    title: "Frontend Development",
-    description: "React, Next.js, TypeScript, Tailwind CSS",
+    title: "Programming",
+    description: "Python, C++, C, Verilog, MATLAB",
     level: 95,
   },
   {
     icon: Zap,
-    title: "Backend Development",
-    description: "Node.js, Python, PostgreSQL, MongoDB",
-    level: 88,
+    title: "AI & Robotics",
+    description: "PyTorch, ROS2, OpenCV, TensorFlow",
+    level: 90,
   },
   {
     icon: Palette,
-    title: "UI/UX Design",
-    description: "Figma, Adobe Creative Suite, Prototyping",
-    level: 92,
+    title: "EDA & Embedded",
+    description: "Cadence, HFSS, Raspberry Pi, Arduino",
+    level: 85,
   },
   {
     icon: Users,
-    title: "Team Leadership",
-    description: "Project Management, Mentoring, Agile",
-    level: 85,
+    title: "Systems & Cloud",
+    description: "Linux, Git, AWS, Docker, Kubernetes",
+    level: 80,
   },
 ]
 
@@ -62,23 +62,21 @@ export function About() {
             className="space-y-6"
           >
             <p className="text-muted-foreground leading-relaxed">
-              With over 5 years of experience in web development and design, I specialize in creating modern, responsive
-              applications that deliver exceptional user experiences. My passion lies in the intersection of technology
-              and creativity.
+              I am an undergraduate student at IIIT Bhagalpur with a strong foundation in Electronics and Communication Engineering.
+              My research interests lie in the intersection of AI/ML, Robotics, and Antenna Design.
             </p>
             <p className="text-muted-foreground leading-relaxed">
-              I believe in writing clean, maintainable code and designing interfaces that are not only visually
-              appealing but also intuitive and accessible. Every project is an opportunity to push boundaries and
-              explore new possibilities.
+              From developing autonomous robots to optimizing antenna designs for wearable applications, I strive to bridge the gap between hardware and software.
+              I have hands-on experience with deploying deep learning models on edge devices and designing complex systems for real-world applications.
             </p>
           </motion.div>
 
           <StaggerContainer className="grid grid-cols-2 gap-4">
             {[
-              { label: "Projects Completed", value: 50, suffix: "+" },
-              { label: "Years Experience", value: 5, suffix: "+" },
-              { label: "Technologies", value: 20, suffix: "+" },
-              { label: "Happy Clients", value: 30, suffix: "+" },
+              { label: "Projects Completed", value: 10, suffix: "+" },
+              { label: "Research Papers", value: 2, suffix: "" },
+              { label: "Hackathon Wins", value: 3, suffix: "" },
+              { label: "CGPA", value: 9.4, suffix: "" },
             ].map((stat, index) => (
               <StaggerItem key={index}>
                 <Card className="p-6 text-center card-hover">

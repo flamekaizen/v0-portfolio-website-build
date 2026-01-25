@@ -38,7 +38,7 @@ export function PageTransition({ children }: PageTransitionProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
             >
-              Alex Johnson
+              Rahul Kumar
             </motion.h2>
             <motion.p
               className="text-muted-foreground"

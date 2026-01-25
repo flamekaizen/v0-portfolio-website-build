@@ -57,9 +57,8 @@ export function Navigation() {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border" : "bg-transparent"
-        }`}
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border" : "bg-transparent"
+          }`}
       >
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
@@ -69,7 +68,7 @@ export function Navigation() {
               className="text-xl font-bold text-gradient cursor-pointer"
               onClick={() => scrollToSection("#hero")}
             >
-              Alex Johnson
+              Rahul Kumar
             </motion.div>
 
             <div className="hidden md:flex items-center space-x-8">
@@ -77,11 +76,10 @@ export function Navigation() {
                 <MagneticButton key={item.name} strength={0.1}>
                   <button
                     onClick={() => scrollToSection(item.href)}
-                    className={`relative px-3 py-2 text-sm font-medium transition-colors ${
-                      activeSection === item.href.substring(1)
+                    className={`relative px-3 py-2 text-sm font-medium transition-colors ${activeSection === item.href.substring(1)
                         ? "text-accent"
                         : "text-muted-foreground hover:text-foreground"
-                    }`}
+                      }`}
                   >
                     {item.name}
                     {activeSection === item.href.substring(1) && (
@@ -143,11 +141,10 @@ export function Navigation() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
                     onClick={() => scrollToSection(item.href)}
-                    className={`block w-full text-left px-4 py-3 rounded-lg transition-colors ${
-                      activeSection === item.href.substring(1)
+                    className={`block w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === item.href.substring(1)
                         ? "text-accent bg-accent/10"
                         : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                    }`}
+                      }`}
                   >
                     {item.name}
                   </motion.button>

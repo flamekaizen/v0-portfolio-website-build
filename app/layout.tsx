@@ -8,10 +8,11 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { GalaxyCursor } from "@/components/ui/galaxy-cursor"
 import { ScrollProgress } from "@/components/ui/scroll-progress"
 import { FloatingElements } from "@/components/animations/floating-elements"
+import { Toaster } from "sonner"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Alex Johnson | Modern Developer & Designer Portfolio",
+  title: "Rahul Kumar | Modern Developer & Designer Portfolio",
   description:
     "A modern, interactive portfolio showcasing cutting-edge web development and design skills with 3D animations and premium aesthetics.",
   generator: "v0.app",
@@ -26,16 +27,16 @@ export const metadata: Metadata = {
     "React",
     "Three.js",
   ],
-  authors: [{ name: "Alex Johnson" }],
+  authors: [{ name: "Rahul Kumar" }],
   openGraph: {
-    title: "Alex Johnson | Modern Developer & Designer Portfolio",
+    title: "Rahul Kumar | Modern Developer & Designer Portfolio",
     description: "A modern, interactive portfolio showcasing cutting-edge web development and design skills.",
     type: "website",
-    siteName: "Alex Johnson Portfolio",
+    siteName: "Rahul Kumar Portfolio",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Alex Johnson | Modern Developer & Designer Portfolio",
+    title: "Rahul Kumar | Modern Developer & Designer Portfolio",
     description: "A modern, interactive portfolio showcasing cutting-edge web development and design skills.",
   },
   robots: {
@@ -68,6 +69,7 @@ export default function RootLayout({
           >
             {children}
             <Analytics />
+            <Toaster />
           </Suspense>
         </ThemeProvider>
       </body>

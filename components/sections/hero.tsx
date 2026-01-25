@@ -48,7 +48,7 @@ export function Hero() {
             className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight"
           >
             <span className="block text-foreground cosmic-text">Hello, I'm</span>
-            <GradientText className="block text-6xl md:text-7xl lg:text-8xl font-extrabold">Alex Johnson</GradientText>
+            <GradientText className="block text-6xl md:text-7xl lg:text-8xl font-extrabold">Rahul Kumar</GradientText>
           </motion.h1>
 
           <motion.p
@@ -57,8 +57,9 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed"
           >
-            Full-Stack Developer & UI/UX Designer exploring the infinite possibilities of digital creation, crafting
-            stellar experiences across the cosmic web.
+            Electronics & Communication Engineer | AI/ML Researcher | Robotics Enthusiast
+            <br />
+            Passionate about exploring the frontiers of technology, from antenna design to autonomous systems.
           </motion.p>
 
           <motion.div
@@ -74,7 +75,7 @@ export function Hero() {
             >
               <span className="relative z-10 flex items-center gap-2">
                 <Sparkles className="w-4 h-4" />
-                Explore My Universe
+                Explore My Work
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Button>
@@ -85,7 +86,7 @@ export function Hero() {
             >
               <span className="relative z-10 flex items-center gap-2">
                 {/* No icon needed for this button */}
-                Connect Across Space
+                Connect With Me
               </span>
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </Button>
@@ -98,7 +99,7 @@ export function Hero() {
             className="flex items-center justify-center gap-6 pt-8"
           >
             <a
-              href="https://github.com"
+              href="https://github.com/flamekaizen"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white cosmic-glow p-3 rounded-full relative overflow-hidden group transition-all duration-300"
@@ -109,7 +110,7 @@ export function Hero() {
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </a>
             <a
-              href="https://linkedin.com"
+              href="https://linkedin.com/in/rahul-kumar-iiitbh"
               target="_blank"
               rel="noopener noreferrer"
               className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white cosmic-glow p-3 rounded-full relative overflow-hidden group transition-all duration-300"
@@ -120,7 +121,7 @@ export function Hero() {
               <div className="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             </a>
             <a
-              href="mailto:hello@example.com"
+              href="mailto:kaizentechrk@gmail.com"
               className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white cosmic-glow p-3 rounded-full relative overflow-hidden group transition-all duration-300"
             >
               <span className="relative z-10">

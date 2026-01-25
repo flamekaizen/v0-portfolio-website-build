@@ -1,6 +1,6 @@
 "use client"
 
-import type React from "react"
+import * as React from "react"
 
 import { motion } from "framer-motion"
 import { Card } from "@/components/ui/card"
@@ -8,15 +8,47 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Mail, Phone, MapPin, Send } from "lucide-react"
-import { ScrollReveal } from "@/components/animations/scroll-reveal"
 import { MagneticButton } from "@/components/animations/magnetic-button"
 import { ParallaxSection } from "@/components/animations/parallax-section"
+import { toast } from "sonner"
+
+import emailjs from "@emailjs/browser"
 
 export function Contact() {
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [subject, setSubject] = React.useState("")
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Handle form submission
-    console.log("Form submitted")
+    setIsSubmitting(true)
+    const form = e.currentTarget
+
+    const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
+    const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+
+    // Demo Mode: If keys are missing, simulate success
+    if (!serviceId || !templateId || !publicKey) {
+      console.warn("EmailJS environment variables missing. Running in Demo Mode.")
+      await new Promise((resolve) => setTimeout(resolve, 1500)) // Simulate network delay
+      toast.success("Message sent successfully! (Demo Mode)")
+      form.reset()
+      setSubject("")
+      setIsSubmitting(false)
+      return
+    }
+
+    try {
+      await emailjs.sendForm(serviceId, templateId, form, publicKey)
+      toast.success("Message sent successfully!")
+      form.reset()
+      setSubject("")
+    } catch (error) {
+      console.error("EmailJS Error:", error)
+      toast.error("Failed to send message. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -26,18 +58,30 @@ export function Contact() {
       </ParallaxSection>
 
       <div className="container mx-auto px-6 relative">
-        <ScrollReveal direction="up" className="text-center mb-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Get In <span className="text-gradient">Touch</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             Ready to start your next project? Let's discuss how we can work together to bring your ideas to life.
           </p>
-        </ScrollReveal>
+        </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Contact Info */}
-          <ScrollReveal direction="left" className="space-y-8">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="space-y-8"
+          >
             <div>
               <h3 className="text-2xl font-semibold mb-6">Let's Connect</h3>
               <p className="text-muted-foreground leading-relaxed mb-8">
@@ -48,9 +92,9 @@ export function Contact() {
 
             <div className="space-y-4">
               {[
-                { icon: Mail, label: "Email", value: "hello@alexjohnson.dev" },
-                { icon: Phone, label: "Phone", value: "+1 (555) 123-4567" },
-                { icon: MapPin, label: "Location", value: "San Francisco, CA" },
+                { icon: Mail, label: "Email", value: "kaizentechrk@gmail.com" },
+                { icon: Phone, label: "Phone", value: "+91-8102283703" },
+                { icon: MapPin, label: "Location", value: "Bhagalpur, India" },
               ].map((item, index) => (
                 <motion.div
                   key={index}
@@ -75,10 +119,15 @@ export function Contact() {
                 </motion.div>
               ))}
             </div>
-          </ScrollReveal>
+          </motion.div>
 
           {/* Contact Form */}
-          <ScrollReveal direction="right">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+          >
             <Card className="p-8 relative overflow-hidden">
               {/* Animated background gradient */}
               <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-secondary/5 opacity-50" />
@@ -91,6 +140,7 @@ export function Contact() {
                     </label>
                     <Input
                       id="name"
+                      name="name"
                       placeholder="Your name"
                       required
                       className="border-border focus:border-accent transition-colors"
@@ -102,6 +152,7 @@ export function Contact() {
                     </label>
                     <Input
                       id="email"
+                      name="email"
                       type="email"
                       placeholder="your@email.com"
                       required
@@ -116,10 +167,15 @@ export function Contact() {
                   </label>
                   <Input
                     id="subject"
+                    name="subject"
                     placeholder="Project inquiry"
                     required
                     className="border-border focus:border-accent transition-colors"
+                    value={subject}
+                    onChange={(e) => setSubject(e.target.value)}
                   />
+                  <input type="hidden" name="title" value={subject} />
+                  <input type="hidden" name="request" value={subject} />
                 </motion.div>
 
                 <motion.div whileFocus={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
@@ -128,6 +184,7 @@ export function Contact() {
                   </label>
                   <Textarea
                     id="message"
+                    name="message"
                     placeholder="Tell me about your project..."
                     rows={5}
                     required
@@ -138,15 +195,16 @@ export function Contact() {
                 <MagneticButton strength={0.1} className="w-full">
                   <Button
                     type="submit"
+                    disabled={isSubmitting}
                     className="w-full bg-accent hover:bg-accent/90 text-accent-foreground glow-effect"
                   >
                     <Send className="w-4 h-4 mr-2" />
-                    Send Message
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </Button>
                 </MagneticButton>
               </form>
             </Card>
-          </ScrollReveal>
+          </motion.div>
         </div>
       </div>
     </section>
