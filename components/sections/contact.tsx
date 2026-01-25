@@ -17,35 +17,60 @@ import emailjs from "@emailjs/browser"
 export function Contact() {
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [subject, setSubject] = React.useState("")
+  const [message, setMessage] = React.useState("")
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
+
+    // Capture the form element immediately to avoid losing access in async callback
     const form = e.currentTarget
+    const formData = new FormData(form)
+
+    const name = formData.get("name") as string
+    const email = formData.get("email") as string
+
+    // Construct template parameters based on the user's EmailJS template
+    const templateParams = {
+      // Matches {{name}} in "Hi {{name}},"
+      name: name,
+      // Matches {{email}} in "To Email" and "Reply To"
+      email: email,
+      // Matches {{title}} in "We have received your request: '{{title}}'"
+      title: subject,
+      // Matches {{message}} in "Your message: {{message}}"
+      message: message,
+    }
 
     const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
     const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID
     const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 
-    // Demo Mode: If keys are missing, simulate success
+    // Demo Mode logic
     if (!serviceId || !templateId || !publicKey) {
       console.warn("EmailJS environment variables missing. Running in Demo Mode.")
-      await new Promise((resolve) => setTimeout(resolve, 1500)) // Simulate network delay
+      await new Promise((resolve) => setTimeout(resolve, 1500))
       toast.success("Message sent successfully! (Demo Mode)")
       form.reset()
       setSubject("")
+      setMessage("")
       setIsSubmitting(false)
       return
     }
 
     try {
-      await emailjs.sendForm(serviceId, templateId, form, publicKey)
+      await emailjs.send(serviceId, templateId, templateParams, publicKey)
       toast.success("Message sent successfully!")
       form.reset()
       setSubject("")
-    } catch (error) {
-      console.error("EmailJS Error:", error)
-      toast.error("Failed to send message. Please try again.")
+      setMessage("")
+    } catch (error: any) {
+      // Improved error logging
+      console.error("EmailJS Error Object:", error)
+      console.error("EmailJS Error String:", JSON.stringify(error))
+
+      const errorMessage = error?.text || "Failed to send message. Please try again."
+      toast.error(errorMessage)
     } finally {
       setIsSubmitting(false)
     }
@@ -189,7 +214,11 @@ export function Contact() {
                     rows={5}
                     required
                     className="border-border focus:border-accent resize-none transition-colors"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                   />
+                  <input type="hidden" name="body" value={message} />
+                  <input type="hidden" name="description" value={message} />
                 </motion.div>
 
                 <MagneticButton strength={0.1} className="w-full">
