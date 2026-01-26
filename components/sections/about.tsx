@@ -76,7 +76,7 @@ export function About() {
               { label: "Projects Completed", value: 10, suffix: "+" },
               { label: "Research Papers", value: 2, suffix: "" },
               { label: "Hackathon Wins", value: 3, suffix: "" },
-              { label: "CGPA", value: 9.4, suffix: "" },
+              { label: "CGPA", value: 9.46, suffix: "" },
             ].map((stat, index) => (
               <StaggerItem key={index}>
                 <Card className="p-6 text-center card-hover">

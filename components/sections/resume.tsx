@@ -130,7 +130,7 @@ function ExperienceContent() {
                             <h3 className="text-xl font-bold text-foreground">{exp.role}</h3>
                             <p className="text-accent font-medium">{exp.company}</p>
                         </div>
-                        <Badge variant="outline" className="w-fit flex items-center gap-1">
+                        <Badge variant="outline" className="w-fit flex items-center gap-1 whitespace-nowrap">
                             <Calendar className="w-3 h-3" />
                             {exp.period}
                         </Badge>

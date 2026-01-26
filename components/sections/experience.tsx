@@ -93,7 +93,7 @@ export function Experience() {
                           </motion.h4>
                           <p className="text-accent">{exp.company}</p>
                         </div>
-                        <span className="text-sm text-muted-foreground bg-muted px-3 py-1 rounded-full">
+                        <span className="text-sm text-muted-foreground bg-muted px-3 py-1 rounded-full whitespace-nowrap">
                           {exp.period}
                         </span>
                       </div>
