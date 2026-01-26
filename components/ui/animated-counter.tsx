@@ -10,9 +10,10 @@ interface AnimatedCounterProps {
   duration?: number
   suffix?: string
   className?: string
+  decimals?: number
 }
 
-export function AnimatedCounter({ from, to, duration = 2, suffix = "", className = "" }: AnimatedCounterProps) {
+export function AnimatedCounter({ from, to, duration = 2, suffix = "", className = "", decimals = 0 }: AnimatedCounterProps) {
   const [count, setCount] = useState(from)
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true })
@@ -28,7 +29,7 @@ export function AnimatedCounter({ from, to, duration = 2, suffix = "", className
       const progress = Math.min((timestamp - startTime) / (duration * 1000), 1)
 
       const easeOutQuart = 1 - Math.pow(1 - progress, 4)
-      const currentCount = Math.floor(from + (to - from) * easeOutQuart)
+      const currentCount = from + (to - from) * easeOutQuart
 
       setCount(currentCount)
 
@@ -54,7 +55,7 @@ export function AnimatedCounter({ from, to, duration = 2, suffix = "", className
       animate={isInView ? { opacity: 1, scale: 1 } : {}}
       transition={{ duration: 0.5 }}
     >
-      {count}
+      {Number(count).toFixed(decimals)}
       {suffix}
     </motion.span>
   )

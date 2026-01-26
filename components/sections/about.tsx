@@ -76,12 +76,12 @@ export function About() {
               { label: "Projects Completed", value: 10, suffix: "+" },
               { label: "Research Papers", value: 2, suffix: "" },
               { label: "Hackathon Wins", value: 3, suffix: "" },
-              { label: "CGPA", value: 9.46, suffix: "" },
+              { label: "CGPA", value: 9.46, suffix: "", decimals: 2 },
             ].map((stat, index) => (
               <StaggerItem key={index}>
                 <Card className="p-6 text-center card-hover">
                   <div className="text-2xl font-bold text-accent mb-2">
-                    <AnimatedCounter from={0} to={stat.value} suffix={stat.suffix} />
+                    <AnimatedCounter from={0} to={stat.value} suffix={stat.suffix} decimals={stat.decimals || 0} />
                   </div>
                   <div className="text-sm text-muted-foreground">{stat.label}</div>
                 </Card>
