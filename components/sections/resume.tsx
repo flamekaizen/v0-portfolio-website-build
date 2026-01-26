@@ -112,7 +112,7 @@ function ExperienceContent() {
         {
             role: "Student Researcher",
             company: "Space Applications Centre (ISRO)",
-            period: "Prior Experience",
+            period: "May 2024 – Jul 2024",
             description: [
                 "Built deep learning–based satellite image super-resolution pipelines.",
                 "Implemented CNN, Transformer, and GAN models (EDSR, ESRT, SRGAN).",
@@ -184,7 +184,7 @@ function ProjectsContent() {
     const projects = [
         {
             title: "EcoWatch – AI-Driven Garbage Detection & LiFE Monitoring",
-            period: "May 2024 – Jul 2024",
+            period: "Project",
             skills: ["YOLO", "Transformers", "Backend API"],
             points: [
                 "Real-time YOLO-based waste detection with low-light enhancement.",
