@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react"
 import { useFrame, useThree } from "@react-three/fiber"
-import { Sphere, Text } from "@react-three/drei"
+import { Sphere, Text, MeshTransmissionMaterial } from "@react-three/drei"
 import type * as THREE from "three"
 
 interface InteractiveSphereProps {
@@ -44,13 +44,16 @@ export function InteractiveSphere({ position, text, color = "#6366f1" }: Interac
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
       >
-        <meshStandardMaterial
+        <MeshTransmissionMaterial
+          backside
+          backsideThickness={0.5}
+          thickness={1}
+          chromaticAberration={0.8}
+          anisotropy={0.3}
+          roughness={hovered ? 0.1 : 0.3}
+          clearcoat={1}
           color={color}
-          transparent
-          opacity={hovered ? 0.3 : 0.1}
-          wireframe
-          emissive={color}
-          emissiveIntensity={hovered ? 0.3 : 0.1}
+          transmission={1}
         />
       </Sphere>
 

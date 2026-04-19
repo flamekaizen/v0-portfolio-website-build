@@ -14,8 +14,6 @@ export function CursorFollower() {
 
     const handleMouseEnter = () => setIsHovering(true)
     const handleMouseLeave = () => setIsHovering(false)
-
-    // Add event listeners for interactive elements
     const interactiveElements = document.querySelectorAll('button, a, [role="button"]')
 
     interactiveElements.forEach((el) => {
@@ -35,29 +33,29 @@ export function CursorFollower() {
   }, [])
 
   return (
-    <div className="pointer-events-none fixed inset-0 z-50 hidden lg:block">
+    <div className="pointer-events-none fixed inset-0 z-[65] hidden lg:block">
       <motion.div
-        className="absolute w-6 h-6 bg-accent/20 rounded-full mix-blend-difference"
+        className="absolute h-8 w-8 rounded-full border border-white/20 bg-sky-300/10 backdrop-blur-sm"
         animate={{
-          x: mousePosition.x - 12,
-          y: mousePosition.y - 12,
-          scale: isHovering ? 1.5 : 1,
+          x: mousePosition.x - 16,
+          y: mousePosition.y - 16,
+          scale: isHovering ? 1.3 : 1,
         }}
         transition={{
           type: "spring",
-          stiffness: 500,
-          damping: 28,
+          stiffness: 420,
+          damping: 26,
         }}
       />
       <motion.div
-        className="absolute w-1 h-1 bg-accent rounded-full"
+        className="absolute h-1.5 w-1.5 rounded-full bg-gradient-to-r from-sky-300 to-amber-200"
         animate={{
-          x: mousePosition.x - 2,
-          y: mousePosition.y - 2,
+          x: mousePosition.x - 3,
+          y: mousePosition.y - 3,
         }}
         transition={{
           type: "spring",
-          stiffness: 1000,
+          stiffness: 820,
           damping: 28,
         }}
       />

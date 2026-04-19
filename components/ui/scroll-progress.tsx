@@ -10,22 +10,19 @@ export function ScrollProgress() {
     const updateScrollProgress = () => {
       const scrollPx = document.documentElement.scrollTop
       const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight
-      const scrolled = scrollPx / winHeightPx
+      const scrolled = winHeightPx > 0 ? scrollPx / winHeightPx : 0
       setScrollProgress(scrolled)
     }
 
-    window.addEventListener("scroll", updateScrollProgress)
+    updateScrollProgress()
+    window.addEventListener("scroll", updateScrollProgress, { passive: true })
     return () => window.removeEventListener("scroll", updateScrollProgress)
   }, [])
 
   return (
-    <motion.div
-      className="fixed top-0 left-0 right-0 h-1 bg-accent/20 z-50"
-      initial={{ scaleX: 0 }}
-      style={{ originX: 0 }}
-    >
+    <motion.div className="fixed left-0 right-0 top-0 z-[70] h-[3px] bg-white/5" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
       <motion.div
-        className="h-full bg-gradient-to-r from-accent to-secondary"
+        className="h-full bg-gradient-to-r from-sky-300 via-cyan-200 to-amber-200"
         style={{ scaleX: scrollProgress, originX: 0 }}
       />
     </motion.div>

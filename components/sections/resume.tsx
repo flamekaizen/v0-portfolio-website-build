@@ -1,352 +1,266 @@
 "use client"
 
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Card } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { AnimatePresence, motion } from "framer-motion"
+import { BookOpen, Briefcase, FileDown, GraduationCap, Target, Trophy, Wrench } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Calendar, Briefcase, GraduationCap, Code, Trophy, User, BookOpen, ExternalLink, ChevronRight } from "lucide-react"
-import { GradientText } from "@/components/ui/gradient-text"
 
 const tabs = [
-    { id: "experience", label: "Experience", icon: Briefcase },
-    { id: "education", label: "Education", icon: GraduationCap },
-    { id: "projects", label: "Projects", icon: Code },
-    { id: "skills", label: "Skills", icon: User },
-    { id: "achievements", label: "Achievements", icon: Trophy },
-    { id: "publications", label: "Publications", icon: BookOpen },
+  { id: "experience", label: "Experience", icon: Briefcase },
+  { id: "education", label: "Education", icon: GraduationCap },
+  { id: "toolkit", label: "Toolkit", icon: Wrench },
+  { id: "leadership", label: "Leadership", icon: Trophy },
+  { id: "publications", label: "Publications", icon: BookOpen },
 ]
 
 export function Resume() {
-    const [activeTab, setActiveTab] = useState("experience")
+  const [activeTab, setActiveTab] = useState("experience")
 
-    return (
-        <section id="resume" className="py-20 relative overflow-hidden">
-            {/* Background Elements */}
-            <div className="absolute inset-0 bg-secondary/5 pointer-events-none" />
-            <div className="absolute -top-24 -right-24 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
-            <div className="absolute -bottom-24 -left-24 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
+  return (
+    <section id="resume" className="section-spacing relative">
+      <div className="section-shell">
+        <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true, amount: 0.3 }}
+          >
+            <div className="section-kicker">Resume Snapshot</div>
+            <h2 className="mt-6 section-heading max-w-3xl text-white">A compact view of my academic record, hands-on experience, and technical range.</h2>
+          </motion.div>
 
-            <div className="container mx-auto px-6 relative z-10">
-                <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    viewport={{ once: true }}
-                    className="text-center mb-16"
+          <Button
+            asChild
+            className="w-fit rounded-full bg-gradient-to-r from-sky-300 to-amber-200 px-6 text-slate-950"
+          >
+            <a href="/resume/rahul_v1.pdf" download>
+              <FileDown className="w-4 h-4" />
+              Download full resume
+            </a>
+          </Button>
+        </div>
+
+        <div className="panel-surface overflow-hidden p-4 sm:p-6">
+          <div className="hide-scrollbar flex gap-2 overflow-x-auto rounded-full border border-white/8 bg-white/5 p-1">
+            {tabs.map((tab) => {
+              const isActive = activeTab === tab.id
+
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`relative flex items-center gap-2 rounded-full px-4 py-2 text-sm transition-colors ${
+                    isActive ? "text-slate-950" : "text-slate-300 hover:text-white"
+                  }`}
                 >
-                    <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                        My <GradientText animate>Resume</GradientText>
-                    </h2>
-                    <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-                        A glance at my academic and professional journey.
-                    </p>
-                </motion.div>
+                  {isActive && (
+                    <motion.span
+                      layoutId="resume-tab"
+                      className="absolute inset-0 rounded-full bg-white"
+                      transition={{ type: "spring", stiffness: 360, damping: 28 }}
+                    />
+                  )}
+                  <tab.icon className="relative z-10 w-4 h-4" />
+                  <span className="relative z-10">{tab.label}</span>
+                </button>
+              )
+            })}
+          </div>
 
-                <div className="grid lg:grid-cols-[250px_1fr] gap-8">
-                    {/* Tabs Navigation */}
-                    <div className="space-y-2">
-                        {tabs.map((tab) => (
-                            <button
-                                key={tab.id}
-                                onClick={() => setActiveTab(tab.id)}
-                                className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-300 ${activeTab === tab.id
-                                    ? "bg-accent text-accent-foreground shadow-lg shadow-accent/25"
-                                    : "hover:bg-accent/10 text-muted-foreground hover:text-foreground"
-                                    }`}
-                            >
-                                <tab.icon className="w-5 h-5" />
-                                <span className="font-medium">{tab.label}</span>
-                                {activeTab === tab.id && (
-                                    <motion.div
-                                        layoutId="activeTabIndicator"
-                                        className="ml-auto"
-                                        initial={{ opacity: 0, x: -10 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: -10 }}
-                                    >
-                                        <ChevronRight className="w-4 h-4" />
-                                    </motion.div>
-                                )}
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Content Area */}
-                    <div className="min-h-[600px]">
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={activeTab}
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -20 }}
-                                transition={{ duration: 0.3 }}
-                            >
-                                {activeTab === "experience" && <ExperienceContent />}
-                                {activeTab === "education" && <EducationContent />}
-                                {activeTab === "projects" && <ProjectsContent />}
-                                {activeTab === "skills" && <SkillsContent />}
-                                {activeTab === "achievements" && <AchievementsContent />}
-                                {activeTab === "publications" && <PublicationsContent />}
-                            </motion.div>
-                        </AnimatePresence>
-                    </div>
-                </div>
-            </div>
-        </section>
-    )
+          <div className="mt-6 min-h-[26rem]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeTab}
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -18 }}
+                transition={{ duration: 0.28 }}
+              >
+                {activeTab === "experience" && <ExperienceContent />}
+                {activeTab === "education" && <EducationContent />}
+                {activeTab === "toolkit" && <ToolkitContent />}
+                {activeTab === "leadership" && <LeadershipContent />}
+                {activeTab === "publications" && <PublicationsContent />}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
 }
 
 function ExperienceContent() {
-    const experiences = [
-        {
-            role: "Student Researcher",
-            company: "Indian Institute of Technology Kharagpur",
-            period: "May 2025 – Jun 2025",
-            description: [
-                "Designed 2.45 GHz flexible textile WBAN antennas achieving |S11| < −20 dB and SAR < 1.6 W/kg.",
-                "Improved radiation efficiency via on-body and bending-aware optimization.",
-                "Validated EM performance using HFSS, ADS, MATLAB.",
-            ],
-        },
-        {
-            role: "Student Researcher",
-            company: "Space Applications Centre (ISRO)",
-            period: "May 2024 – Jul 2024",
-            description: [
-                "Built deep learning–based satellite image super-resolution pipelines.",
-                "Implemented CNN, Transformer, and GAN models (EDSR, ESRT, SRGAN).",
-                "Achieved PSNR ≈ 35 dB, SSIM > 0.96 on Raspberry Pi 4B.",
-            ],
-        },
-    ]
+  const experiences = [
+    {
+      role: "Student Researcher",
+      organization: "Indian Institute of Technology Kharagpur",
+      period: "May 2025 - Jun 2025",
+      points: [
+        "Designed and optimized 2.45 GHz flexible textile antennas for wearable WBAN use cases.",
+        "Improved radiation efficiency through on-body and bending-aware optimization.",
+        "Validated performance using HFSS, ADS, and MATLAB with SAR-aware evaluation.",
+      ],
+    },
+    {
+      role: "Student Researcher",
+      organization: "Space Applications Centre (ISRO), Ahmedabad",
+      period: "May 2024 - Jul 2024",
+      points: [
+        "Built satellite image super-resolution pipelines using CNN and transformer-based approaches.",
+        "Deployed inference workflows on Raspberry Pi 4B for practical edge experimentation.",
+        "Achieved strong PSNR and SSIM results for imagery enhancement scenarios.",
+      ],
+    },
+  ]
 
-    return (
-        <div className="space-y-6">
-            {experiences.map((exp, index) => (
-                <Card key={index} className="p-6 hover:border-accent/50 transition-colors">
-                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
-                        <div>
-                            <h3 className="text-xl font-bold text-foreground">{exp.role}</h3>
-                            <p className="text-accent font-medium">{exp.company}</p>
-                        </div>
-                        <Badge variant="outline" className="w-fit flex items-center gap-1 whitespace-nowrap">
-                            <Calendar className="w-3 h-3" />
-                            {exp.period}
-                        </Badge>
-                    </div>
-                    <ul className="space-y-2">
-                        {exp.description.map((item, i) => (
-                            <li key={i} className="flex items-start gap-2 text-muted-foreground">
-                                <span className="mt-2 w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-                                <span>{item}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </Card>
+  return (
+    <div className="grid gap-4 lg:grid-cols-2">
+      {experiences.map((item) => (
+        <div key={item.organization} className="rounded-[1.5rem] border border-white/10 bg-white/5 p-6">
+          <p className="text-sm uppercase tracking-[0.16em] text-slate-400">{item.period}</p>
+          <h3 className="mt-4 text-xl font-semibold text-white">{item.role}</h3>
+          <p className="mt-1 text-sky-200">{item.organization}</p>
+          <ul className="mt-5 space-y-3 text-sm leading-6 text-slate-300">
+            {item.points.map((point) => (
+              <li key={point} className="flex gap-3">
+                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-sky-300" />
+                <span>{point}</span>
+              </li>
             ))}
+          </ul>
         </div>
-    )
+      ))}
+    </div>
+  )
 }
 
 function EducationContent() {
-    return (
-        <Card className="p-8 hover:border-accent/50 transition-colors">
-            <div className="flex items-start justify-between gap-4 mb-6">
-                <div>
-                    <h3 className="text-2xl font-bold mb-2">Indian Institute of Information Technology Bhagalpur</h3>
-                    <p className="text-lg text-accent">B.Tech. in Electronics and Communication Engineering</p>
-                </div>
-                <Badge className="bg-accent text-accent-foreground">2022 - 2026</Badge>
-            </div>
+  const courses = [
+    "Data Structures and Algorithms",
+    "Machine Learning",
+    "Deep Learning",
+    "Computer Vision",
+    "Signal Processing",
+    "VLSI Design",
+    "RF and Microwave Systems",
+    "Robotics",
+  ]
 
-            <div className="grid md:grid-cols-2 gap-8 mt-8">
-                <div className="p-4 bg-secondary/10 rounded-lg">
-                    <div className="text-sm text-muted-foreground mb-1">Cumulative GPA</div>
-                    <div className="text-3xl font-bold text-foreground">9.46<span className="text-lg text-muted-foreground">/10</span></div>
-                    <div className="text-xs text-accent mt-2">Current Batch Rank: 2nd Overall</div>
-                </div>
+  return (
+    <div className="grid gap-4 lg:grid-cols-[1fr_0.95fr]">
+      <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-6">
+        <p className="text-sm uppercase tracking-[0.16em] text-slate-400">2022 - 2026</p>
+        <h3 className="mt-4 text-2xl font-semibold text-white">B.Tech. in Electronics and Communication Engineering</h3>
+        <p className="mt-2 text-sky-200">Indian Institute of Information Technology Bhagalpur</p>
+        <p className="mt-5 text-sm leading-6 text-slate-300">
+          Strong emphasis on AI, robotics, communication systems, and hardware-aware engineering. Consistently ranked
+          among the top performers in the batch.
+        </p>
+      </div>
 
-                <div className="space-y-4">
-                    <h4 className="font-semibold border-b border-border pb-2">Core Coursework</h4>
-                    <div className="flex flex-wrap gap-2">
-                        {["Data Structures & Algorithms", "VLSI Design", "RF/Microwave Systems", "Antennas", "Signal Processing", "Computer Vision", "Robotics", "Machine Learning", "Deep Learning"].map((course) => (
-                            <Badge key={course} variant="secondary">{course}</Badge>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </Card>
-    )
-}
+      <div className="grid gap-4">
+        <div className="rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-sky-300/16 to-amber-200/12 p-6">
+          <p className="text-sm uppercase tracking-[0.16em] text-slate-200/70">Performance</p>
+          <div className="mt-4 flex items-end gap-2">
+            <span className="text-4xl font-semibold text-white">9.46</span>
+            <span className="pb-1 text-slate-300">/ 10 CGPA</span>
+          </div>
+          <p className="mt-3 text-sm text-slate-200/80">Ranked 2nd overall in the batch and 1st in branch standing.</p>
+        </div>
 
-function ProjectsContent() {
-    const projects = [
-        {
-            title: "EcoWatch – AI-Driven Garbage Detection & LiFE Monitoring",
-            period: "Project",
-            skills: ["YOLO", "Transformers", "Backend API"],
-            points: [
-                "Real-time YOLO-based waste detection with low-light enhancement.",
-                "Integrated transformer super-resolution, achieving mAP 0.95.",
-                "Built scalable backend APIs and analytics dashboard.",
-            ],
-        },
-        {
-            title: "Vision-Guided Pick-and-Place Robotic Arm",
-            period: "Robotics",
-            skills: ["Robotics", "Computer Vision", "Control Systems"],
-            points: [
-                "Vision-guided robotic manipulator for autonomous grasping.",
-                "Achieved 95% detection accuracy under varying illumination.",
-                "Improved execution speed by 20%.",
-            ],
-        },
-        {
-            title: "Cosmo Logistic – Autonomous Mobile Robot",
-            period: "Robotics",
-            skills: ["ROS2", "Nav2", "ARUCO"],
-            points: [
-                "Implemented ARUCO-based localization using ROS2 + Nav2.",
-                "Enabled autonomous navigation for TurtleBot.",
-                "Achieved ±0.3 m positional and ±10° angular accuracy.",
-            ],
-        },
-    ]
-
-    return (
-        <div className="grid gap-6">
-            {projects.map((project, index) => (
-                <Card key={index} className="p-6 hover:border-accent/50 transition-colors group">
-                    <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 mb-4">
-                        <div>
-                            <h3 className="text-lg font-bold group-hover:text-accent transition-colors">{project.title}</h3>
-                            <div className="flex flex-wrap gap-2 mt-2">
-                                {project.skills.map((skill) => (
-                                    <Badge key={skill} variant="secondary" className="text-xs">{skill}</Badge>
-                                ))}
-                            </div>
-                        </div>
-                        {project.period.includes("20") && (
-                            <Badge variant="outline" className="w-fit">{project.period}</Badge>
-                        )}
-                    </div>
-                    <ul className="space-y-2">
-                        {project.points.map((point, i) => (
-                            <li key={i} className="flex items-start gap-2 text-muted-foreground text-sm">
-                                <span className="mt-1.5 w-1 h-1 rounded-full bg-accent flex-shrink-0" />
-                                <span>{point}</span>
-                            </li>
-                        ))}
-                    </ul>
-                </Card>
+        <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-6">
+          <h4 className="text-lg font-semibold text-white">Core coursework</h4>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {courses.map((course) => (
+              <span key={course} className="rounded-full bg-slate-950/50 px-3 py-1.5 text-xs text-slate-300">
+                {course}
+              </span>
             ))}
+          </div>
         </div>
-    )
+      </div>
+    </div>
+  )
 }
 
-function SkillsContent() {
-    const skillCategories = [
-        {
-            title: "Programming Languages",
-            skills: ["Python", "C++", "C", "R", "Verilog", "Assembly", "Tcl", "Perl", "LATEX"],
-        },
-        {
-            title: "AI/ML & Robotics",
-            skills: ["OpenCV", "NumPy", "Pandas", "PyTorch", "TensorFlow", "Keras", "ROS2", "Nav2", "Gazebo", "CUDA", "ONNX"],
-        },
-        {
-            title: "EDA & Embedded Systems",
-            skills: ["Cadence Virtuoso", "HFSS", "ADS", "CST", "MATLAB", "Vivado", "Raspberry Pi", "Arduino"],
-        },
-        {
-            title: "Systems & Cloud",
-            skills: ["Linux (Ubuntu/RHEL)", "Git", "AWS", "GCP", "Docker", "Kubernetes", "SQL", "MongoDB"],
-        },
-    ]
+function ToolkitContent() {
+  const categories = [
+    {
+      title: "Programming",
+      items: ["Python", "C++", "C", "Verilog", "MATLAB", "TypeScript"],
+    },
+    {
+      title: "AI and robotics",
+      items: ["PyTorch", "TensorFlow", "OpenCV", "ROS2", "Nav2", "Gazebo"],
+    },
+    {
+      title: "EDA and embedded",
+      items: ["Cadence", "HFSS", "ADS", "Raspberry Pi", "Arduino", "Vivado"],
+    },
+    {
+      title: "Systems and cloud",
+      items: ["Linux", "Git", "Docker", "Kubernetes", "AWS", "MongoDB"],
+    },
+  ]
 
-    return (
-        <div className="grid md:grid-cols-2 gap-6">
-            {skillCategories.map((category, index) => (
-                <Card key={index} className="p-6 hover:border-accent/50 transition-colors">
-                    <h3 className="font-semibold mb-4 text-accent">{category.title}</h3>
-                    <div className="flex flex-wrap gap-2">
-                        {category.skills.map((skill) => (
-                            <Badge key={skill} variant="secondary" className="hover:bg-accent hover:text-accent-foreground transition-colors">
-                                {skill}
-                            </Badge>
-                        ))}
-                    </div>
-                </Card>
+  return (
+    <div className="grid gap-4 lg:grid-cols-2">
+      {categories.map((category) => (
+        <div key={category.title} className="rounded-[1.5rem] border border-white/10 bg-white/5 p-6">
+          <h3 className="text-lg font-semibold text-white">{category.title}</h3>
+          <div className="mt-4 flex flex-wrap gap-2">
+            {category.items.map((item) => (
+              <span key={item} className="rounded-full border border-white/10 px-3 py-1.5 text-sm text-slate-300">
+                {item}
+              </span>
             ))}
+          </div>
         </div>
-    )
+      ))}
+    </div>
+  )
 }
 
-function AchievementsContent() {
-    const achievements = [
-        "Academic Rank: Currently 1st in ECE branch and 2nd overall in the 2022–2026 batch (2025–26).",
-        "Amazon ML Challenge 2025: Ranked 184 / 27,000+ teams (Top 0.7%).",
-        "ISRO Robotics Challenge (URSC): Autonomous rover proposal shortlisted.",
-        "Smart India Hackathon: 1st Rank (2024) and 2nd Rank (2023) — Institute Level & Grand Finalist (National).",
-        "Flipkart GRiD Robotics Challenge: Robotic arm and CV-based solution shortlisted among 1,000+ teams.",
-    ]
+function LeadershipContent() {
+  const items = [
+    "General Secretary, Technical Board - Student Gymkhana Council, IIIT Bhagalpur.",
+    "Lead, Robotics and Electronics Club - mentoring teams and supporting technical events.",
+    "Amazon ML Challenge 2025 - top 0.7 percent standing among 27,000+ teams.",
+    "Smart India Hackathon - institute-level winner and national grand finalist experience.",
+  ]
 
-    const responsibilities = [
-        "General Secretary, Technical Board — Student Gymkhana Council (SGC), IIIT Bhagalpur.",
-        "Lead, Robotics & Electronics Club — Technical Board (SGC), IIIT Bhagalpur.",
-    ]
-
-    return (
-        <div className="space-y-8">
-            <Card className="p-6">
-                <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                    <Trophy className="w-5 h-5 text-accent" />
-                    Honors & Awards
-                </h3>
-                <ul className="space-y-4">
-                    {achievements.map((item, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                            <span className="flex items-center justify-center w-6 h-6 rounded-full bg-accent/10 text-accent text-sm font-bold flex-shrink-0">
-                                {index + 1}
-                            </span>
-                            <p className="text-muted-foreground">{item}</p>
-                        </li>
-                    ))}
-                </ul>
-            </Card>
-
-            <Card className="p-6">
-                <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
-                    <User className="w-5 h-5 text-accent" />
-                    Positions of Responsibility
-                </h3>
-                <ul className="space-y-4">
-                    {responsibilities.map((item, index) => (
-                        <li key={index} className="flex items-start gap-3">
-                            <span className="mt-2 w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-                            <p className="text-muted-foreground">{item}</p>
-                        </li>
-                    ))}
-                </ul>
-            </Card>
-        </div>
-    )
+  return (
+    <div className="grid gap-4 lg:grid-cols-[0.9fr_1.1fr]">
+      <div className="rounded-[1.5rem] border border-white/10 bg-gradient-to-br from-sky-300/16 to-amber-200/10 p-6">
+        <Target className="w-6 h-6 text-slate-950" />
+        <h3 className="mt-4 text-2xl font-semibold text-white">Leadership through execution</h3>
+        <p className="mt-4 text-sm leading-6 text-slate-200/80">
+          I enjoy organizing teams, translating technical ideas into actionable plans, and helping projects look more
+          complete and compelling.
+        </p>
+      </div>
+      <div className="space-y-4">
+        {items.map((item) => (
+          <div key={item} className="rounded-[1.5rem] border border-white/10 bg-white/5 p-5 text-sm leading-6 text-slate-300">
+            {item}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
 }
 
 function PublicationsContent() {
-    return (
-        <Card className="p-12 text-center border-dashed border-2 hover:border-accent/50 transition-colors">
-            <div className="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                <BookOpen className="w-8 h-8 text-accent" />
-            </div>
-            <h3 className="text-2xl font-bold mb-3">Publications</h3>
-            <p className="text-muted-foreground max-w-md mx-auto mb-6">
-                Exciting research is in the works! Several papers are currently under review or in preparation.
-            </p>
-            <Badge variant="secondary" className="text-sm px-4 py-1">
-                Coming Soon
-            </Badge>
-        </Card>
-    )
+  return (
+    <div className="rounded-[1.5rem] border border-dashed border-white/14 bg-white/5 p-10 text-center">
+      <BookOpen className="mx-auto h-10 w-10 text-sky-200" />
+      <h3 className="mt-5 text-2xl font-semibold text-white">Research publications in progress</h3>
+      <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-slate-300">
+        Papers and formal write-ups are currently being prepared from research and project work. This section is ready
+        to expand as those submissions move forward.
+      </p>
+    </div>
+  )
 }

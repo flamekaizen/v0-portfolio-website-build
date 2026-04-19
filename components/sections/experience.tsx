@@ -1,170 +1,110 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Card } from "@/components/ui/card"
+import { Award, ChevronRight, Milestone, Users } from "lucide-react"
 
-const experiences = [
+const timeline = [
   {
-    title: "Student Researcher",
-    company: "Indian Institute of Technology Kharagpur",
-    period: "May 2025 – Jun 2025",
-    description:
-      "Designed and optimized 2.45 GHz flexible textile antennas for wearable WBAN applications. Validated designs using HFSS, ADS, and MATLAB.",
-    achievements: ["Achieved |S11| < 20 dB", "Enhanced radiation efficiency", "Safety verified (SAR < 1.6 W/kg)"],
+    year: "2025",
+    title: "IIT Kharagpur antenna research",
+    description: "Worked on flexible textile antennas for wearable WBAN applications with simulation-backed validation.",
   },
   {
-    title: "Student Researcher",
-    company: "Space Applications Centre (ISRO), Ahmedabad",
-    period: "May 2024 – Jul 2024",
-    description:
-      "Developed deep learning-based image super-resolution pipelines (FSRCNN, ESPCN, VDSR, SRResNet) for satellite imagery enhancement.",
-    achievements: ["Deployed on Raspberry Pi 4B", "Achieved PSNR ~35 dB", "SSIM > 0.96 for debris analysis"],
+    year: "2025",
+    title: "Amazon ML Challenge recognition",
+    description: "Finished in the top 0.7 percent, reinforcing strong applied ML problem solving under competition pressure.",
+  },
+  {
+    year: "2024",
+    title: "ISRO image enhancement research",
+    description: "Explored super-resolution workflows for satellite imagery and edge deployment on Raspberry Pi hardware.",
+  },
+  {
+    year: "2023-24",
+    title: "Robotics and technical leadership",
+    description: "Led club initiatives, mentored peers, and kept building autonomous and computer-vision driven projects.",
   },
 ]
 
-const education = [
+const highlights = [
   {
-    degree: "B.Tech. in Electronics and Communication Engineering",
-    school: "Indian Institute of Information Technology Bhagalpur",
-    period: "2022 – 2026",
-    description: "Specializing in ECE with a strong focus on AI, Robotics, and VLSI Design. Maintained a CGPA of 9.46/10.",
+    icon: Award,
+    title: "Recognition",
+    text: "Hackathon results, research roles, and challenge rankings backed by measurable outputs.",
+  },
+  {
+    icon: Users,
+    title: "Leadership",
+    text: "Comfortable owning delivery, coordinating teams, and improving the clarity of technical work.",
+  },
+  {
+    icon: Milestone,
+    title: "Momentum",
+    text: "A steady progression from strong academic performance into higher-complexity applied engineering work.",
   },
 ]
 
 export function Experience() {
   return (
-    <section id="experience" className="py-20 bg-card/30 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-accent/5 rounded-full blur-3xl animate-pulse" />
-        <div
-          className="absolute bottom-20 right-10 w-48 h-48 bg-secondary/5 rounded-full blur-3xl animate-pulse"
-          style={{ animationDelay: "2s" }}
-        />
-      </div>
+    <section id="experience" className="section-spacing relative">
+      <div className="section-shell">
+        <div className="mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true, amount: 0.3 }}
+          >
+            <div className="section-kicker">Trajectory</div>
+            <h2 className="mt-6 section-heading max-w-3xl text-white">A timeline of research, competitions, and leadership milestones.</h2>
+          </motion.div>
+        </div>
 
-      <div className="container mx-auto px-6 relative">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Experience & Education</h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            My professional journey and educational background in technology
-          </p>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Experience */}
-          <div>
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-2xl font-semibold mb-8 text-accent">Work Experience</h3>
-            </motion.div>
+        <div className="grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
+          <motion.div
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true, amount: 0.3 }}
+            className="panel-surface p-6 sm:p-8"
+          >
             <div className="space-y-6">
-              {experiences.map((exp, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
-                    <Card className="p-6 card-hover relative overflow-hidden">
-                      {/* Timeline line */}
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-accent to-secondary" />
-
-                      <div className="flex justify-between items-start mb-3">
-                        <div>
-                          <motion.h4
-                            className="text-lg font-semibold"
-                            whileHover={{ x: 5 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            {exp.title}
-                          </motion.h4>
-                          <p className="text-accent">{exp.company}</p>
-                        </div>
-                        <span className="text-sm text-muted-foreground bg-muted px-3 py-1 rounded-full whitespace-nowrap">
-                          {exp.period}
-                        </span>
+              {timeline.map((item, index) => (
+                <div key={`${item.year}-${item.title}`} className="grid gap-4 border-b border-white/8 pb-6 last:border-b-0 last:pb-0 sm:grid-cols-[110px_1fr]">
+                  <div>
+                    <span className="rounded-full bg-white/8 px-3 py-1 text-sm font-medium text-sky-200">{item.year}</span>
+                  </div>
+                  <div>
+                    <div className="flex items-start gap-3">
+                      <ChevronRight className="mt-1 h-4 w-4 text-slate-500" />
+                      <div>
+                        <h3 className="text-lg font-semibold text-white">{item.title}</h3>
+                        <p className="mt-2 text-sm leading-6 text-slate-300">{item.description}</p>
                       </div>
-                      <p className="text-muted-foreground mb-4 leading-relaxed">{exp.description}</p>
-                      <ul className="space-y-1">
-                        {exp.achievements.map((achievement, i) => (
-                          <motion.li
-                            key={i}
-                            className="text-sm text-muted-foreground flex items-center"
-                            initial={{ opacity: 0, x: -10 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            transition={{ duration: 0.3, delay: i * 0.1 }}
-                            viewport={{ once: true }}
-                          >
-                            <span className="w-1.5 h-1.5 bg-accent rounded-full mr-3 flex-shrink-0" />
-                            {achievement}
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </Card>
-                  </motion.div>
-                </motion.div>
+                    </div>
+                  </div>
+                </div>
               ))}
             </div>
-          </div>
+          </motion.div>
 
-          {/* Education */}
-          <div>
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-            >
-              <h3 className="text-2xl font-semibold mb-8 text-accent">Education</h3>
-            </motion.div>
-            <div className="space-y-6">
-              {education.map((edu, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
-                    <Card className="p-6 card-hover relative overflow-hidden">
-                      {/* Timeline line */}
-                      <div className="absolute right-0 top-0 bottom-0 w-1 bg-gradient-to-b from-secondary to-accent" />
-
-                      <div className="flex justify-between items-start mb-3">
-                        <div>
-                          <motion.h4
-                            className="text-lg font-semibold"
-                            whileHover={{ x: -5 }}
-                            transition={{ duration: 0.2 }}
-                          >
-                            {edu.degree}
-                          </motion.h4>
-                          <p className="text-accent">{edu.school}</p>
-                        </div>
-                        <span className="text-sm text-muted-foreground bg-muted px-3 py-1 rounded-full">
-                          {edu.period}
-                        </span>
-                      </div>
-                      <p className="text-muted-foreground leading-relaxed">{edu.description}</p>
-                    </Card>
-                  </motion.div>
-                </motion.div>
-              ))}
-            </div>
+          <div className="grid gap-4">
+            {highlights.map((item, index) => (
+              <motion.div
+                key={item.title}
+                initial={{ opacity: 0, y: 28 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.65, delay: index * 0.08 }}
+                viewport={{ once: true, amount: 0.3 }}
+                className="panel-surface card-hover p-6"
+              >
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-300/20 to-amber-200/16">
+                  <item.icon className="w-5 h-5 text-sky-200" />
+                </div>
+                <h3 className="mt-5 text-xl font-semibold text-white">{item.title}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-300">{item.text}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </div>

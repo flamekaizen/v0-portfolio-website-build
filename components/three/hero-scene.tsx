@@ -24,9 +24,9 @@ export function HeroScene() {
 
           <Environment preset="night" />
 
-          <GalaxyBackground count={8000} />
+          <GalaxyBackground count={15000} />
 
-          <CosmicDust count={2000} />
+          <CosmicDust count={4000} />
 
           {/* Enhanced particle field with cosmic colors */}
           <ParticleField />

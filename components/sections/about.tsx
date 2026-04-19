@@ -1,140 +1,136 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Card } from "@/components/ui/card"
-import { Code, Palette, Zap, Users } from "lucide-react"
-import { AnimatedCounter } from "@/components/ui/animated-counter"
-import { StaggerContainer, StaggerItem } from "@/components/animations/stagger-container"
-import { GradientText } from "@/components/ui/gradient-text"
+import { BrainCircuit, Cpu, Layers3, ShieldCheck } from "lucide-react"
 
-const skills = [
+const capabilities = [
   {
-    icon: Code,
-    title: "Programming",
-    description: "Python, C++, C, Verilog, MATLAB",
-    level: 95,
+    icon: BrainCircuit,
+    title: "Applied AI and ML",
+    description: "Model experimentation, performance evaluation, and turning research prototypes into usable systems.",
   },
   {
-    icon: Zap,
-    title: "AI & Robotics",
-    description: "PyTorch, ROS2, OpenCV, TensorFlow",
-    level: 90,
+    icon: Cpu,
+    title: "Embedded and edge systems",
+    description: "Deploying intelligence closer to hardware with tight awareness of latency, memory, and device limits.",
   },
   {
-    icon: Palette,
-    title: "EDA & Embedded",
-    description: "Cadence, HFSS, Raspberry Pi, Arduino",
-    level: 85,
+    icon: Layers3,
+    title: "Product-grade interfaces",
+    description: "Designing web experiences that make complex systems approachable, trustworthy, and easy to navigate.",
   },
   {
-    icon: Users,
-    title: "Systems & Cloud",
-    description: "Linux, Git, AWS, Docker, Kubernetes",
-    level: 80,
+    icon: ShieldCheck,
+    title: "Engineering discipline",
+    description: "Clear documentation, measurable outcomes, and delivery decisions grounded in reliability rather than hype.",
   },
+]
+
+const stack = [
+  "Python",
+  "PyTorch",
+  "ROS2",
+  "OpenCV",
+  "TensorFlow",
+  "Next.js",
+  "TypeScript",
+  "Three.js",
+  "HFSS",
+  "MATLAB",
+  "Docker",
+  "Linux",
 ]
 
 export function About() {
   return (
-    <section id="about" className="py-20 bg-card/30">
-      <div className="container mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            About <GradientText animate>Me</GradientText>
-          </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Passionate about creating digital experiences that blend functionality with beautiful design
-          </p>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
+    <section id="about" className="section-spacing relative">
+      <div className="section-shell">
+        <div className="grid gap-8 lg:grid-cols-[0.92fr_1.08fr]">
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="space-y-6"
+            initial={{ opacity: 0, y: 28 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            viewport={{ once: true, amount: 0.3 }}
+            className="panel-surface p-8 sm:p-10"
           >
-            <p className="text-muted-foreground leading-relaxed">
-              I am an undergraduate student at IIIT Bhagalpur with a strong foundation in Electronics and Communication Engineering.
-              My research interests lie in the intersection of AI/ML, Robotics, and Antenna Design.
-            </p>
-            <p className="text-muted-foreground leading-relaxed">
-              From developing autonomous robots to optimizing antenna designs for wearable applications, I strive to bridge the gap between hardware and software.
-              I have hands-on experience with deploying deep learning models on edge devices and designing complex systems for real-world applications.
-            </p>
+            <div className="section-kicker">About</div>
+            <h2 className="mt-6 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+              Strong systems thinking with a builder&apos;s eye for experience.
+            </h2>
+            <div className="mt-6 space-y-5 text-base leading-7 text-slate-300">
+              <p>
+                My work sits at the intersection of electronics, AI, robotics, and digital product design. I enjoy
+                taking technically demanding ideas and shaping them into systems that are not only accurate or efficient,
+                but also presentable, explainable, and ready to demonstrate.
+              </p>
+              <p>
+                That means I care about the whole stack: experiments, deployment constraints, human interaction, and how
+                the final result communicates confidence to reviewers, collaborators, or end users.
+              </p>
+            </div>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-2">
+              <div className="rounded-[1.4rem] border border-white/10 bg-white/5 p-5">
+                <p className="text-sm uppercase tracking-[0.16em] text-slate-400">Academic standing</p>
+                <p className="mt-3 text-3xl font-semibold text-white">Batch top performer</p>
+                <p className="mt-2 text-sm text-slate-300">Consistent results across core ECE and applied engineering work.</p>
+              </div>
+              <div className="rounded-[1.4rem] border border-white/10 bg-white/5 p-5">
+                <p className="text-sm uppercase tracking-[0.16em] text-slate-400">Preferred work mode</p>
+                <p className="mt-3 text-3xl font-semibold text-white">Research to demo</p>
+                <p className="mt-2 text-sm text-slate-300">Rapid prototyping with documentation, storytelling, and polish.</p>
+              </div>
+            </div>
           </motion.div>
 
-          <StaggerContainer className="grid grid-cols-2 gap-4">
-            {[
-              { label: "Projects Completed", value: 10, suffix: "+" },
-              { label: "Research Papers", value: 2, suffix: "" },
-              { label: "Hackathon Wins", value: 3, suffix: "" },
-              { label: "CGPA", value: 9.46, suffix: "", decimals: 2 },
-            ].map((stat, index) => (
-              <StaggerItem key={index}>
-                <Card className="p-6 text-center card-hover">
-                  <div className="text-2xl font-bold text-accent mb-2">
-                    <AnimatedCounter from={0} to={stat.value} suffix={stat.suffix} decimals={stat.decimals || 0} />
+          <div className="space-y-8">
+            <motion.div
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.05 }}
+              viewport={{ once: true, amount: 0.3 }}
+              className="grid gap-4 sm:grid-cols-2"
+            >
+              {capabilities.map((item, index) => (
+                <div key={item.title} className="panel-surface card-hover p-6">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-300/22 to-amber-200/18">
+                    <item.icon className="w-5 h-5 text-sky-200" />
                   </div>
-                  <div className="text-sm text-muted-foreground">{stat.label}</div>
-                </Card>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
+                  <h3 className="mt-5 text-xl font-semibold text-white">{item.title}</h3>
+                  <p className="mt-3 text-sm leading-6 text-slate-300">{item.description}</p>
+                </div>
+              ))}
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              viewport={{ once: true, amount: 0.3 }}
+              className="panel-surface p-6 sm:p-8"
+            >
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <div className="section-kicker">Toolkit</div>
+                  <h3 className="mt-4 text-2xl font-semibold text-white">A flexible stack for research, robotics, and product delivery</h3>
+                </div>
+                <p className="max-w-sm text-sm leading-6 text-slate-300">
+                  I move comfortably between algorithms, simulation tools, embedded workflows, and frontend implementation.
+                </p>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-3">
+                {stack.map((item) => (
+                  <span
+                    key={item}
+                    className="rounded-full border border-white/10 bg-slate-950/50 px-4 py-2 text-sm text-slate-200"
+                  >
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+          </div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="space-y-8"
-        >
-          <h3 className="text-2xl font-semibold text-center mb-8">
-            Skills & <GradientText>Expertise</GradientText>
-          </h3>
-
-          <StaggerContainer className="grid md:grid-cols-2 gap-6">
-            {skills.map((skill, index) => (
-              <StaggerItem key={index}>
-                <Card className="p-6 card-hover">
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="p-3 bg-accent/10 rounded-lg">
-                      <skill.icon className="w-6 h-6 text-accent" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-semibold mb-1">{skill.title}</h4>
-                      <p className="text-sm text-muted-foreground">{skill.description}</p>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span>Proficiency</span>
-                      <span className="text-accent">{skill.level}%</span>
-                    </div>
-                    <div className="w-full bg-muted rounded-full h-2">
-                      <motion.div
-                        initial={{ width: 0 }}
-                        whileInView={{ width: `${skill.level}%` }}
-                        transition={{ duration: 1, delay: index * 0.1 }}
-                        viewport={{ once: true }}
-                        className="bg-gradient-to-r from-accent to-secondary h-2 rounded-full"
-                      />
-                    </div>
-                  </div>
-                </Card>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </motion.div>
       </div>
     </section>
   )

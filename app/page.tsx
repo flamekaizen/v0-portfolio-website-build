@@ -4,26 +4,26 @@ import { Portfolio } from "@/components/sections/portfolio"
 import { Resume } from "@/components/sections/resume"
 import { Experience } from "@/components/sections/experience"
 import { Contact } from "@/components/sections/contact"
+import { Footer } from "@/components/sections/footer"
 import { Navigation } from "@/components/navigation"
 import { PageTransition } from "@/components/animations/page-transition"
 import { CursorFollower } from "@/components/ui/cursor-follower"
-import { ScrollProgress } from "@/components/ui/scroll-progress"
-import { FloatingElements } from "@/components/animations/floating-elements"
+import { Services } from "@/components/sections/services"
 
 export default function HomePage() {
   return (
     <PageTransition>
-      <main className="relative min-h-screen bg-background">
+      <main className="relative min-h-screen overflow-x-clip">
         <CursorFollower />
-        <ScrollProgress />
-        <FloatingElements />
         <Navigation />
         <Hero />
         <About />
+        <Services />
         <Portfolio />
         <Resume />
         <Experience />
         <Contact />
+        <Footer />
       </main>
     </PageTransition>
   )

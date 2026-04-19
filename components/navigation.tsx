@@ -1,17 +1,17 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useEffect, useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import { ArrowUpRight, FileDown, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Menu, X } from "lucide-react"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
-import { MagneticButton } from "@/components/animations/magnetic-button"
 
 const navItems = [
   { name: "Home", href: "#hero" },
   { name: "About", href: "#about" },
-  { name: "Portfolio", href: "#portfolio" },
-  { name: "Experience", href: "#experience" },
+  { name: "Services", href: "#services" },
+  { name: "Work", href: "#portfolio" },
+  { name: "Resume", href: "#resume" },
   { name: "Contact", href: "#contact" },
 ]
 
@@ -22,17 +22,17 @@ export function Navigation() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      setIsScrolled(window.scrollY > 24)
 
-      // Update active section based on scroll position
       const sections = navItems.map((item) => item.href.substring(1))
       const currentSection = sections.find((section) => {
         const element = document.getElementById(section)
-        if (element) {
-          const rect = element.getBoundingClientRect()
-          return rect.top <= 100 && rect.bottom >= 100
+        if (!element) {
+          return false
         }
-        return false
+
+        const rect = element.getBoundingClientRect()
+        return rect.top <= 160 && rect.bottom >= 160
       })
 
       if (currentSection) {
@@ -40,85 +40,94 @@ export function Navigation() {
       }
     }
 
-    window.addEventListener("scroll", handleScroll)
+    handleScroll()
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   const scrollToSection = (href: string) => {
     const element = document.getElementById(href.substring(1))
     if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
-      setIsMobileMenuOpen(false) // Close mobile menu after navigation
+      element.scrollIntoView({ behavior: "smooth", block: "start" })
+      setIsMobileMenuOpen(false)
     }
   }
 
   return (
     <>
       <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-background/80 backdrop-blur-md border-b border-border" : "bg-transparent"
-          }`}
+        initial={{ y: -80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6"
       >
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="text-xl font-bold text-gradient cursor-pointer"
-              onClick={() => scrollToSection("#hero")}
-            >
-              Rahul Kumar
-            </motion.div>
-
-            <div className="hidden md:flex items-center space-x-8">
-              {navItems.map((item) => (
-                <MagneticButton key={item.name} strength={0.1}>
-                  <button
-                    onClick={() => scrollToSection(item.href)}
-                    className={`relative px-3 py-2 text-sm font-medium transition-colors ${activeSection === item.href.substring(1)
-                        ? "text-accent"
-                        : "text-muted-foreground hover:text-foreground"
-                      }`}
-                  >
-                    {item.name}
-                    {activeSection === item.href.substring(1) && (
-                      <motion.div
-                        layoutId="activeSection"
-                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-accent rounded-full"
-                        initial={false}
-                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                      />
-                    )}
-                  </button>
-                </MagneticButton>
-              ))}
+        <div
+          className={`mx-auto flex w-full max-w-7xl items-center justify-between rounded-full border px-4 py-3 transition-all duration-300 sm:px-6 ${
+            isScrolled
+              ? "border-white/12 bg-slate-950/75 shadow-[0_20px_80px_rgba(3,10,24,0.35)] backdrop-blur-2xl"
+              : "border-white/8 bg-slate-950/45 backdrop-blur-xl"
+          }`}
+        >
+          <button
+            onClick={() => scrollToSection("#hero")}
+            className="flex items-center gap-3 text-left"
+            aria-label="Go to hero section"
+          >
+            <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-sky-300/30 to-amber-200/20 text-sm font-semibold text-white">
+              RK
+            </span>
+            <div className="hidden sm:block">
+              <p className="text-sm font-semibold text-white">Rahul Kumar</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-400">AI and Product Engineer</p>
             </div>
+          </button>
 
-            <div className="flex items-center gap-4">
-              <ThemeToggle />
+          <div className="hidden items-center gap-1 rounded-full border border-white/8 bg-white/4 p-1 md:flex">
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href.substring(1)
 
-              <MagneticButton strength={0.2}>
-                <Button
-                  onClick={() => scrollToSection("#contact")}
-                  className="hidden md:block bg-accent hover:bg-accent/90 text-accent-foreground glow-effect"
+              return (
+                <button
+                  key={item.name}
+                  onClick={() => scrollToSection(item.href)}
+                  className={`relative rounded-full px-4 py-2 text-sm transition-colors ${
+                    isActive ? "text-slate-950" : "text-slate-300 hover:text-white"
+                  }`}
                 >
-                  Get In Touch
-                </Button>
-              </MagneticButton>
+                  {isActive && (
+                    <motion.span
+                      layoutId="active-nav-pill"
+                      className="absolute inset-0 rounded-full bg-white"
+                      transition={{ type: "spring", stiffness: 360, damping: 28 }}
+                    />
+                  )}
+                  <span className="relative z-10">{item.name}</span>
+                </button>
+              )
+            })}
+          </div>
 
-              {/* Mobile menu button */}
-              <Button
-                variant="ghost"
-                size="sm"
-                className="md:hidden"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              >
-                <motion.div animate={{ rotate: isMobileMenuOpen ? 180 : 0 }} transition={{ duration: 0.3 }}>
-                  {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-                </motion.div>
-              </Button>
-            </div>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <Button
+              asChild
+              size="sm"
+              className="hidden rounded-full border border-sky-300/20 bg-gradient-to-r from-sky-300 to-amber-200 px-4 font-semibold text-slate-950 shadow-[0_14px_40px_rgba(125,211,252,0.22)] transition-transform hover:-translate-y-0.5 md:inline-flex"
+            >
+              <a href="/resume/rahul_v1.pdf" download>
+                <FileDown className="w-4 h-4" />
+                Resume
+              </a>
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="rounded-full border border-white/10 bg-white/5 text-white md:hidden"
+              onClick={() => setIsMobileMenuOpen((open) => !open)}
+              aria-label="Toggle menu"
+            >
+              {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </Button>
           </div>
         </div>
       </motion.nav>
@@ -126,43 +135,27 @@ export function Navigation() {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="fixed top-16 left-0 right-0 z-40 bg-background/95 backdrop-blur-md border-b border-border md:hidden"
+            exit={{ opacity: 0, y: -16 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-x-4 top-24 z-40 rounded-[1.75rem] border border-white/10 bg-slate-950/92 p-5 shadow-[0_30px_80px_rgba(3,10,24,0.55)] backdrop-blur-2xl md:hidden"
           >
-            <div className="container mx-auto px-6 py-6">
-              <div className="space-y-4">
-                {navItems.map((item, index) => (
-                  <motion.button
-                    key={item.name}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    onClick={() => scrollToSection(item.href)}
-                    className={`block w-full text-left px-4 py-3 rounded-lg transition-colors ${activeSection === item.href.substring(1)
-                        ? "text-accent bg-accent/10"
-                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
-                      }`}
-                  >
-                    {item.name}
-                  </motion.button>
-                ))}
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: navItems.length * 0.1 }}
-                  className="pt-4"
+            <div className="space-y-2">
+              {navItems.map((item) => (
+                <button
+                  key={item.name}
+                  onClick={() => scrollToSection(item.href)}
+                  className={`flex w-full items-center justify-between rounded-2xl px-4 py-3 text-left transition-colors ${
+                    activeSection === item.href.substring(1)
+                      ? "bg-white text-slate-950"
+                      : "bg-white/5 text-slate-200 hover:bg-white/8"
+                  }`}
                 >
-                  <Button
-                    onClick={() => scrollToSection("#contact")}
-                    className="w-full bg-accent hover:bg-accent/90 text-accent-foreground glow-effect"
-                  >
-                    Get In Touch
-                  </Button>
-                </motion.div>
-              </div>
+                  <span className="font-medium">{item.name}</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </button>
+              ))}
             </div>
           </motion.div>
         )}

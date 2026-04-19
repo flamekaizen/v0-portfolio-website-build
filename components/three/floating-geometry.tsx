@@ -2,7 +2,7 @@
 
 import { useRef } from "react"
 import { useFrame } from "@react-three/fiber"
-import { Sphere, Box, Octahedron } from "@react-three/drei"
+import { Sphere, Box, Octahedron, MeshTransmissionMaterial } from "@react-three/drei"
 import type * as THREE from "three"
 
 interface FloatingGeometryProps {
@@ -17,9 +17,9 @@ export function FloatingGeometry({ position, geometry, scale = 1, speed = 1 }: F
 
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * speed) * 0.2
-      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * speed * 0.8) * 0.3
-      meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * speed * 0.5) * 0.5
+      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * speed) * 0.18
+      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * speed * 0.8) * 0.28
+      meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * speed * 0.5) * 0.45
     }
   })
 
@@ -31,13 +31,16 @@ export function FloatingGeometry({ position, geometry, scale = 1, speed = 1 }: F
 
   return (
     <GeometryComponent ref={meshRef} position={position} scale={scale}>
-      <meshStandardMaterial
-        color="#6366f1"
-        transparent
-        opacity={0.1}
-        wireframe
-        emissive="#6366f1"
-        emissiveIntensity={0.1}
+      <MeshTransmissionMaterial
+        backside
+        backsideThickness={0.8}
+        thickness={1.6}
+        chromaticAberration={0.55}
+        anisotropy={0.2}
+        roughness={0.08}
+        clearcoat={1}
+        color="#cbd5e1"
+        transmission={1}
       />
     </GeometryComponent>
   )
