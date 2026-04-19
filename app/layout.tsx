@@ -8,33 +8,43 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { ScrollProgress } from "@/components/ui/scroll-progress"
 import { Toaster } from "sonner"
 import { Global3DWrapper } from "@/components/three/global-3d-wrapper"
+import { siteConfig } from "@/lib/site-config"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Rahul Kumar | AI, Robotics & Product Engineering Portfolio",
-  description:
-    "Professional portfolio for Rahul Kumar featuring AI systems, robotics research, product design, and polished interactive web experiences.",
+  metadataBase: new URL(siteConfig.siteUrl),
+  title: {
+    default: siteConfig.title,
+    template: `%s | ${siteConfig.name}`,
+  },
+  description: siteConfig.description,
   generator: "v0.app",
   keywords: [
-    "Rahul Kumar",
+    siteConfig.name,
     "portfolio",
     "AI engineer",
     "robotics",
     "product engineering",
     "Next.js",
     "Three.js",
+    "EmailJS integration",
+    "frontend engineering",
   ],
-  authors: [{ name: "Rahul Kumar" }],
+  authors: [{ name: siteConfig.name }],
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "Rahul Kumar | AI, Robotics & Product Engineering Portfolio",
-    description: "A refined interactive portfolio showcasing AI, robotics, research, and premium digital product design.",
+    title: siteConfig.title,
+    description: siteConfig.description,
     type: "website",
-    siteName: "Rahul Kumar Portfolio",
+    siteName: `${siteConfig.name} Portfolio`,
+    url: siteConfig.siteUrl,
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rahul Kumar | AI, Robotics & Product Engineering Portfolio",
-    description: "A refined interactive portfolio showcasing AI, robotics, research, and premium digital product design.",
+    title: siteConfig.title,
+    description: siteConfig.description,
   },
   robots: {
     index: true,
@@ -63,6 +73,12 @@ export default function RootLayout({
         />
       </head>
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
+        <a
+          href="#main-content"
+          className="sr-only z-[100] rounded-full bg-white px-4 py-2 text-slate-950 focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        >
+          Skip to content
+        </a>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange={true} forcedTheme="dark">
           <ScrollProgress />
           <Global3DWrapper />

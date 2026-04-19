@@ -8,21 +8,52 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { toast } from "sonner"
 import emailjs from "@emailjs/browser"
+import { siteConfig } from "@/lib/site-config"
 
 const quickSubjects = ["Project inquiry", "Research collaboration", "UI/UX redesign", "Internship opportunity"]
+const serviceOptions = ["AI/ML system", "Robotics build", "Portfolio redesign", "EmailJS integration", "General inquiry"]
+const timelineOptions = ["ASAP", "1-2 weeks", "2-4 weeks", "1-2 months", "Flexible"]
 
 export function Contact() {
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [subject, setSubject] = React.useState(quickSubjects[0])
   const [message, setMessage] = React.useState("")
+  const [selectedService, setSelectedService] = React.useState(serviceOptions[0])
+  const [timeline, setTimeline] = React.useState(timelineOptions[2])
+  const [emailConfigured, setEmailConfigured] = React.useState(false)
+
+  React.useEffect(() => {
+    setEmailConfigured(
+      Boolean(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID &&
+          process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID &&
+          process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY,
+      ),
+    )
+  }, [])
 
   const copyEmail = async () => {
     try {
-      await navigator.clipboard.writeText("kaizentechrk@gmail.com")
+      await navigator.clipboard.writeText(siteConfig.email)
       toast.success("Email copied to clipboard")
     } catch {
       toast.error("Unable to copy email right now")
     }
+  }
+
+  const openMailFallback = (name: string, email: string, company: string) => {
+    const bodyLines = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      `Company or organization: ${company || "Not provided"}`,
+      `Service needed: ${selectedService}`,
+      `Timeline: ${timeline}`,
+      "",
+      message,
+    ]
+
+    const mailto = `mailto:${siteConfig.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join("\n"))}`
+    window.location.href = mailto
   }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,14 +62,30 @@ export function Contact() {
 
     const form = e.currentTarget
     const formData = new FormData(form)
-    const name = formData.get("name") as string
-    const email = formData.get("email") as string
+    const name = (formData.get("name") as string)?.trim()
+    const email = (formData.get("email") as string)?.trim()
+    const company = (formData.get("company") as string)?.trim()
+    const website = formData.get("website") as string
+
+    if (website) {
+      setIsSubmitting(false)
+      return
+    }
+
+    if (message.trim().length < 24) {
+      toast.error("Please add a little more detail so I can understand the request.")
+      setIsSubmitting(false)
+      return
+    }
 
     const templateParams = {
       name,
       email,
+      company,
       title: subject,
       message,
+      service: selectedService,
+      timeline,
     }
 
     const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID
@@ -46,11 +93,8 @@ export function Contact() {
     const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 
     if (!serviceId || !templateId || !publicKey) {
-      await new Promise((resolve) => setTimeout(resolve, 1200))
-      toast.success("Message sent successfully in demo mode")
-      form.reset()
-      setSubject(quickSubjects[0])
-      setMessage("")
+      openMailFallback(name, email, company)
+      toast.success("EmailJS is not configured yet, so your mail app has been opened instead.")
       setIsSubmitting(false)
       return
     }
@@ -61,8 +105,11 @@ export function Contact() {
       form.reset()
       setSubject(quickSubjects[0])
       setMessage("")
+      setSelectedService(serviceOptions[0])
+      setTimeline(timelineOptions[2])
     } catch (error: any) {
-      const errorMessage = error?.text || "Failed to send message. Please try again."
+      openMailFallback(name, email, company)
+      const errorMessage = error?.text || "Failed to send via EmailJS. Opening your default mail app instead."
       toast.error(errorMessage)
     } finally {
       setIsSubmitting(false)
@@ -102,15 +149,34 @@ export function Contact() {
               <p className="mt-3 text-sm leading-6 text-slate-300">
                 Best fit for AI and robotics work, research collaborations, frontend redesigns, and demo-ready builds.
               </p>
+
               <div className="mt-6 space-y-4 rounded-[1.75rem] border border-white/10 bg-white/5 p-5 text-sm text-slate-300">
                 <p className="font-semibold text-white">What I respond to first</p>
-                <ul className="space-y-2 pl-4 text-slate-300">
-                  <li>• Research collaboration proposals</li>
-                  <li>• AI and robotics prototype briefs</li>
-                  <li>• Internship and project opportunities</li>
+                <ul className="space-y-2">
+                  {[
+                    "Research collaboration proposals",
+                    "AI and robotics prototype briefs",
+                    "Internship and project opportunities",
+                  ].map((item) => (
+                    <li key={item} className="flex items-center gap-3">
+                      <span className="h-1.5 w-1.5 rounded-full bg-sky-300" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
                 </ul>
-                <p className="text-xs uppercase tracking-[0.22em] text-slate-400">Typical response time: within 24 hours</p>
+                <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
+                  Typical response time: {siteConfig.responseTime}
+                </p>
+                <div className="rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3">
+                  <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Contact pipeline</p>
+                  <p className="mt-2 text-sm text-slate-200">
+                    {emailConfigured
+                      ? "EmailJS is configured and ready for direct form delivery."
+                      : "EmailJS fallback mode is active. The form will open your mail client until keys are configured."}
+                  </p>
+                </div>
               </div>
+
               <div className="mt-6 flex flex-wrap gap-3">
                 <Button
                   onClick={copyEmail}
@@ -120,11 +186,8 @@ export function Contact() {
                   <Copy className="w-4 h-4" />
                   Copy email
                 </Button>
-                <Button
-                  asChild
-                  className="rounded-full bg-gradient-to-r from-sky-300 to-amber-200 text-slate-950"
-                >
-                  <a href="/resume/rahul_v1.pdf" download>
+                <Button asChild className="rounded-full bg-gradient-to-r from-sky-300 to-amber-200 text-slate-950">
+                  <a href={siteConfig.resumePath} download>
                     <FileDown className="w-4 h-4" />
                     Resume
                   </a>
@@ -133,10 +196,10 @@ export function Contact() {
             </div>
 
             {[
-              { icon: Mail, label: "Email", value: "kaizentechrk@gmail.com", href: "mailto:kaizentechrk@gmail.com" },
-              { icon: Phone, label: "Phone", value: "+91 81022 83703", href: "tel:+918102283703" },
-              { icon: Linkedin, label: "LinkedIn", value: "rahul-kumar-iiitbh", href: "https://linkedin.com/in/rahul-kumar-iiitbh" },
-              { icon: MapPin, label: "Location", value: "Patna, Bihar, India", href: "#" },
+              { icon: Mail, label: "Email", value: siteConfig.email, href: `mailto:${siteConfig.email}` },
+              { icon: Phone, label: "Phone", value: siteConfig.phone, href: siteConfig.phoneHref },
+              { icon: Linkedin, label: "LinkedIn", value: "rahul-kumar-iiitbh", href: siteConfig.linkedin },
+              { icon: MapPin, label: "Location", value: siteConfig.location, href: "https://maps.google.com/?q=Patna,Bihar,India" },
             ].map((item) => (
               <a
                 key={item.label}
@@ -194,6 +257,20 @@ export function Contact() {
                   />
                 </div>
                 <div className="space-y-2">
+                  <label htmlFor="company" className="text-sm font-medium text-slate-200">
+                    Company or organization
+                  </label>
+                  <Input
+                    id="company"
+                    name="company"
+                    placeholder="Optional"
+                    className="rounded-2xl border-white/10 bg-slate-950/45 text-white placeholder:text-slate-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div className="space-y-2">
                   <label htmlFor="email" className="text-sm font-medium text-slate-200">
                     Email
                   </label>
@@ -205,6 +282,42 @@ export function Contact() {
                     required
                     className="rounded-2xl border-white/10 bg-slate-950/45 text-white placeholder:text-slate-500"
                   />
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="timeline" className="text-sm font-medium text-slate-200">
+                    Preferred timeline
+                  </label>
+                  <select
+                    id="timeline"
+                    name="timeline"
+                    value={timeline}
+                    onChange={(e) => setTimeline(e.target.value)}
+                    className="flex h-11 w-full rounded-2xl border border-white/10 bg-slate-950/45 px-3 text-sm text-white outline-none focus:border-sky-300/40"
+                  >
+                    {timelineOptions.map((item) => (
+                      <option key={item} value={item} className="bg-slate-950">
+                        {item}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                <label className="text-sm font-medium text-slate-200">What do you need help with?</label>
+                <div className="flex flex-wrap gap-2">
+                  {serviceOptions.map((item) => (
+                    <button
+                      key={item}
+                      type="button"
+                      onClick={() => setSelectedService(item)}
+                      className={`rounded-full px-4 py-2 text-sm transition-colors ${
+                        selectedService === item ? "bg-white text-slate-950" : "bg-white/6 text-slate-300 hover:bg-white/10"
+                      }`}
+                    >
+                      {item}
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -238,6 +351,8 @@ export function Contact() {
                 />
               </div>
 
+              <input type="hidden" name="website" tabIndex={-1} autoComplete="off" />
+              <input type="hidden" name="service" value={selectedService} />
               <input type="hidden" name="title" value={subject} />
               <input type="hidden" name="body" value={message} />
 
@@ -247,7 +362,7 @@ export function Contact() {
                 className="w-full rounded-full bg-gradient-to-r from-sky-300 to-amber-200 py-6 text-base font-semibold text-slate-950"
               >
                 <Send className="w-4 h-4" />
-                {isSubmitting ? "Sending..." : "Send message"}
+                {isSubmitting ? "Sending..." : emailConfigured ? "Send message" : "Open mail fallback"}
               </Button>
             </form>
           </motion.div>

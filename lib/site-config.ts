@@ -1,0 +1,53 @@
+export const siteConfig = {
+  name: "Rahul Kumar",
+  shortName: "RK",
+  role: "AI and Product Engineer",
+  title: "Rahul Kumar | AI, Robotics & Product Engineering Portfolio",
+  description:
+    "Professional portfolio for Rahul Kumar featuring AI systems, robotics research, premium frontend engineering, and production-ready digital experiences.",
+  email: "kaizentechrk@gmail.com",
+  phone: "+91 81022 83703",
+  phoneHref: "tel:+918102283703",
+  location: "Patna, Bihar, India",
+  linkedin: "https://linkedin.com/in/rahul-kumar-iiitbh",
+  github: "https://github.com/flamekaizen",
+  resumePath: "/resume/rahul_v1.pdf",
+  responseTime: "Within 24 hours",
+  siteUrl: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
+  navItems: [
+    { name: "Home", href: "#hero" },
+    { name: "About", href: "#about" },
+    { name: "Services", href: "#services" },
+    { name: "Work", href: "#portfolio" },
+    { name: "Process", href: "#process" },
+    { name: "Testimonials", href: "#testimonials" },
+    { name: "FAQ", href: "#faq" },
+    { name: "Contact", href: "#contact" },
+  ],
+}
+
+export const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: siteConfig.name,
+  jobTitle: siteConfig.role,
+  email: siteConfig.email,
+  telephone: siteConfig.phone,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Patna",
+    addressRegion: "Bihar",
+    addressCountry: "IN",
+  },
+  sameAs: [siteConfig.github, siteConfig.linkedin],
+  url: siteConfig.siteUrl,
+  knowsAbout: [
+    "Artificial Intelligence",
+    "Machine Learning",
+    "Robotics",
+    "Computer Vision",
+    "Next.js",
+    "Frontend Engineering",
+    "Embedded Systems",
+  ],
+}

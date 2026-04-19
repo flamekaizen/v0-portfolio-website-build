@@ -4,16 +4,7 @@ import { useEffect, useState } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { ArrowUpRight, FileDown, Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/ui/theme-toggle"
-
-const navItems = [
-  { name: "Home", href: "#hero" },
-  { name: "About", href: "#about" },
-  { name: "Services", href: "#services" },
-  { name: "Work", href: "#portfolio" },
-  { name: "Resume", href: "#resume" },
-  { name: "Contact", href: "#contact" },
-]
+import { siteConfig } from "@/lib/site-config"
 
 export function Navigation() {
   const [activeSection, setActiveSection] = useState("hero")
@@ -24,7 +15,7 @@ export function Navigation() {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 24)
 
-      const sections = navItems.map((item) => item.href.substring(1))
+      const sections = siteConfig.navItems.map((item) => item.href.substring(1))
       const currentSection = sections.find((section) => {
         const element = document.getElementById(section)
         if (!element) {
@@ -74,16 +65,16 @@ export function Navigation() {
             aria-label="Go to hero section"
           >
             <span className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-sky-300/30 to-amber-200/20 text-sm font-semibold text-white">
-              RK
+              {siteConfig.shortName}
             </span>
             <div className="hidden sm:block">
-              <p className="text-sm font-semibold text-white">Rahul Kumar</p>
-              <p className="text-xs uppercase tracking-[0.2em] text-slate-400">AI and Product Engineer</p>
+              <p className="text-sm font-semibold text-white">{siteConfig.name}</p>
+              <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{siteConfig.role}</p>
             </div>
           </button>
 
           <div className="hidden items-center gap-1 rounded-full border border-white/8 bg-white/4 p-1 md:flex">
-            {navItems.map((item) => {
+            {siteConfig.navItems.map((item) => {
               const isActive = activeSection === item.href.substring(1)
 
               return (
@@ -108,13 +99,12 @@ export function Navigation() {
           </div>
 
           <div className="flex items-center gap-2">
-            <ThemeToggle />
             <Button
               asChild
               size="sm"
               className="hidden rounded-full border border-sky-300/20 bg-gradient-to-r from-sky-300 to-amber-200 px-4 font-semibold text-slate-950 shadow-[0_14px_40px_rgba(125,211,252,0.22)] transition-transform hover:-translate-y-0.5 md:inline-flex"
             >
-              <a href="/resume/rahul_v1.pdf" download>
+              <a href={siteConfig.resumePath} download>
                 <FileDown className="w-4 h-4" />
                 Resume
               </a>
@@ -142,7 +132,7 @@ export function Navigation() {
             className="fixed inset-x-4 top-24 z-40 rounded-[1.75rem] border border-white/10 bg-slate-950/92 p-5 shadow-[0_30px_80px_rgba(3,10,24,0.55)] backdrop-blur-2xl md:hidden"
           >
             <div className="space-y-2">
-              {navItems.map((item) => (
+              {siteConfig.navItems.map((item) => (
                 <button
                   key={item.name}
                   onClick={() => scrollToSection(item.href)}

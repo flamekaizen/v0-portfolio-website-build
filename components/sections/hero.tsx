@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { ArrowDown, ArrowRight, FileDown, Github, Linkedin, Mail, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { HeroShowcase } from "@/components/three/hero-showcase"
+import { siteConfig } from "@/lib/site-config"
 
 const proofPoints = [
   { value: "9.46", label: "CGPA and batch-level academic consistency" },
@@ -100,7 +101,7 @@ export function Hero() {
                 asChild
                 className="rounded-full border border-white/10 bg-slate-950/40 px-7 text-slate-100 hover:bg-white/10"
               >
-                <a href="/resume/rahul_v1.pdf" download>
+                <a href={siteConfig.resumePath} download>
                   <FileDown className="w-4 h-4" />
                   Download resume
                 </a>
@@ -109,7 +110,7 @@ export function Hero() {
 
             <div className="mt-8 flex flex-wrap items-center gap-3 text-sm text-slate-300">
               <a
-                href="https://github.com/flamekaizen"
+                href={siteConfig.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-colors hover:bg-white/10"
@@ -118,7 +119,7 @@ export function Hero() {
                 GitHub
               </a>
               <a
-                href="https://linkedin.com/in/rahul-kumar-iiitbh"
+                href={siteConfig.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-colors hover:bg-white/10"
@@ -127,7 +128,7 @@ export function Hero() {
                 LinkedIn
               </a>
               <a
-                href="mailto:kaizentechrk@gmail.com"
+                href={`mailto:${siteConfig.email}`}
                 className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-colors hover:bg-white/10"
               >
                 <Mail className="w-4 h-4" />

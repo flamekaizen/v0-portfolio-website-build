@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Brain, LayoutDashboard, Rocket, SatelliteDish } from "lucide-react"
+import { Brain, LayoutDashboard, MailCheck, Rocket, SatelliteDish } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const services = [
@@ -22,6 +22,12 @@ const services = [
     title: "Product UI and technical storytelling",
     description: "Interfaces and dashboards that make advanced systems understandable to mentors, judges, teams, and users.",
     points: ["Clear interaction design", "Premium presentation quality", "Responsive frontend builds"],
+  },
+  {
+    icon: MailCheck,
+    title: "Lead capture and EmailJS workflows",
+    description: "Professional contact systems with EmailJS integration, qualified inquiry fields, fallback handling, and polished form UX.",
+    points: ["EmailJS setup", "Lead qualification", "Reliable contact pathways"],
   },
   {
     icon: Rocket,
@@ -60,7 +66,7 @@ export function Services() {
           </motion.div>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-5 lg:grid-cols-2 xl:grid-cols-5">
           {services.map((service, index) => (
             <motion.div
               key={service.title}
