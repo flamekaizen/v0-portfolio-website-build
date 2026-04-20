@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { motion } from "framer-motion"
-import { Copy, FileDown, Linkedin, Mail, MapPin, Phone, Send } from "lucide-react"
+import { Copy, FileDown, Github, Linkedin, Mail, MapPin, Phone, Send } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -11,7 +11,7 @@ import emailjs from "@emailjs/browser"
 import { siteConfig } from "@/lib/site-config"
 
 const quickSubjects = ["Project inquiry", "Research collaboration", "UI/UX redesign", "Internship opportunity"]
-const serviceOptions = ["AI/ML system", "Robotics build", "Portfolio redesign", "EmailJS integration", "General inquiry"]
+const serviceOptions = ["AI/ML project", "Robotics build", "Frontend/UI redesign", "Research collaboration", "General inquiry"]
 const timelineOptions = ["ASAP", "1-2 weeks", "2-4 weeks", "1-2 months", "Flexible"]
 
 export function Contact() {
@@ -94,7 +94,7 @@ export function Contact() {
 
     if (!serviceId || !templateId || !publicKey) {
       openMailFallback(name, email, company)
-      toast.success("EmailJS is not configured yet, so your mail app has been opened instead.")
+      toast.success("Opening your mail client to send the message.")
       setIsSubmitting(false)
       return
     }
@@ -109,7 +109,7 @@ export function Contact() {
       setTimeline(timelineOptions[2])
     } catch (error: any) {
       openMailFallback(name, email, company)
-      const errorMessage = error?.text || "Failed to send via EmailJS. Opening your default mail app instead."
+      const errorMessage = error?.text || "Failed to send. Opening your default mail app instead."
       toast.error(errorMessage)
     } finally {
       setIsSubmitting(false)
@@ -164,15 +164,10 @@ export function Contact() {
                     </li>
                   ))}
                 </ul>
-                <p className="text-xs uppercase tracking-[0.22em] text-slate-400">
-                  Typical response time: {siteConfig.responseTime}
-                </p>
-                <div className="rounded-2xl border border-white/10 bg-slate-950/40 px-4 py-3">
-                  <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Contact pipeline</p>
-                  <p className="mt-2 text-sm text-slate-200">
-                    {emailConfigured
-                      ? "EmailJS is configured and ready for direct form delivery."
-                      : "EmailJS fallback mode is active. The form will open your mail client until keys are configured."}
+                <div className="flex items-center gap-2 rounded-full bg-white/5 px-3 py-2">
+                  <span className="h-2 w-2 rounded-full bg-emerald-300 animate-pulse-dot" />
+                  <p className="text-xs uppercase tracking-[0.18em] text-slate-400">
+                    Typical response time: {siteConfig.responseTime}
                   </p>
                 </div>
               </div>
@@ -181,12 +176,12 @@ export function Contact() {
                 <Button
                   onClick={copyEmail}
                   variant="outline"
-                  className="rounded-full border-white/12 bg-white/5 text-white hover:bg-white/10"
+                  className="btn-glow rounded-full border-white/12 bg-white/5 text-white hover:bg-white/10"
                 >
                   <Copy className="w-4 h-4" />
                   Copy email
                 </Button>
-                <Button asChild className="rounded-full bg-gradient-to-r from-sky-300 to-amber-200 text-slate-950">
+                <Button asChild className="btn-glow rounded-full bg-gradient-to-r from-sky-300 to-amber-200 text-slate-950">
                   <a href={siteConfig.resumePath} download>
                     <FileDown className="w-4 h-4" />
                     Resume
@@ -198,6 +193,7 @@ export function Contact() {
             {[
               { icon: Mail, label: "Email", value: siteConfig.email, href: `mailto:${siteConfig.email}` },
               { icon: Phone, label: "Phone", value: siteConfig.phone, href: siteConfig.phoneHref },
+              { icon: Github, label: "GitHub", value: "flamekaizen", href: siteConfig.github },
               { icon: Linkedin, label: "LinkedIn", value: "rahul-kumar-iiitbh", href: siteConfig.linkedin },
               { icon: MapPin, label: "Location", value: siteConfig.location, href: "https://maps.google.com/?q=Patna,Bihar,India" },
             ].map((item) => (
@@ -206,9 +202,9 @@ export function Contact() {
                 href={item.href}
                 target={item.href.startsWith("http") ? "_blank" : undefined}
                 rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="panel-surface card-hover flex items-center gap-4 p-5"
+                className="group panel-surface card-hover flex items-center gap-4 p-5"
               >
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-300/20 to-amber-200/16">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-300/20 to-amber-200/16 transition-transform duration-300 group-hover:scale-110">
                   <item.icon className="w-5 h-5 text-sky-200" />
                 </div>
                 <div>
@@ -233,8 +229,10 @@ export function Contact() {
                   key={item}
                   type="button"
                   onClick={() => setSubject(item)}
-                  className={`rounded-full px-4 py-2 text-sm transition-colors ${
-                    subject === item ? "bg-white text-slate-950" : "bg-white/6 text-slate-300 hover:bg-white/10"
+                  className={`rounded-full px-4 py-2 text-sm transition-all duration-200 ${
+                    subject === item
+                      ? "bg-white text-slate-950 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                      : "bg-white/6 text-slate-300 hover:bg-white/10 hover:text-white"
                   }`}
                 >
                   {item}
@@ -253,7 +251,7 @@ export function Contact() {
                     name="name"
                     placeholder="Your name"
                     required
-                    className="rounded-2xl border-white/10 bg-slate-950/45 text-white placeholder:text-slate-500"
+                    className="rounded-2xl border-white/10 bg-slate-950/45 text-white placeholder:text-slate-500 transition-all duration-200"
                   />
                 </div>
                 <div className="space-y-2">
@@ -264,7 +262,7 @@ export function Contact() {
                     id="company"
                     name="company"
                     placeholder="Optional"
-                    className="rounded-2xl border-white/10 bg-slate-950/45 text-white placeholder:text-slate-500"
+                    className="rounded-2xl border-white/10 bg-slate-950/45 text-white placeholder:text-slate-500 transition-all duration-200"
                   />
                 </div>
               </div>
@@ -280,7 +278,7 @@ export function Contact() {
                     type="email"
                     placeholder="you@example.com"
                     required
-                    className="rounded-2xl border-white/10 bg-slate-950/45 text-white placeholder:text-slate-500"
+                    className="rounded-2xl border-white/10 bg-slate-950/45 text-white placeholder:text-slate-500 transition-all duration-200"
                   />
                 </div>
                 <div className="space-y-2">
@@ -292,7 +290,7 @@ export function Contact() {
                     name="timeline"
                     value={timeline}
                     onChange={(e) => setTimeline(e.target.value)}
-                    className="flex h-11 w-full rounded-2xl border border-white/10 bg-slate-950/45 px-3 text-sm text-white outline-none focus:border-sky-300/40"
+                    className="flex h-11 w-full rounded-2xl border border-white/10 bg-slate-950/45 px-3 text-sm text-white outline-none transition-all duration-200 focus:border-sky-300/40"
                   >
                     {timelineOptions.map((item) => (
                       <option key={item} value={item} className="bg-slate-950">
@@ -311,8 +309,10 @@ export function Contact() {
                       key={item}
                       type="button"
                       onClick={() => setSelectedService(item)}
-                      className={`rounded-full px-4 py-2 text-sm transition-colors ${
-                        selectedService === item ? "bg-white text-slate-950" : "bg-white/6 text-slate-300 hover:bg-white/10"
+                      className={`rounded-full px-4 py-2 text-sm transition-all duration-200 ${
+                        selectedService === item
+                          ? "bg-white text-slate-950 shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+                          : "bg-white/6 text-slate-300 hover:bg-white/10 hover:text-white"
                       }`}
                     >
                       {item}
@@ -331,7 +331,7 @@ export function Contact() {
                   required
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
-                  className="rounded-2xl border-white/10 bg-slate-950/45 text-white placeholder:text-slate-500"
+                  className="rounded-2xl border-white/10 bg-slate-950/45 text-white placeholder:text-slate-500 transition-all duration-200"
                 />
               </div>
 
@@ -347,7 +347,7 @@ export function Contact() {
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
                   placeholder="Tell me what you're building, what stage you're in, and what kind of help you need."
-                  className="rounded-[1.5rem] border-white/10 bg-slate-950/45 text-white placeholder:text-slate-500"
+                  className="rounded-[1.5rem] border-white/10 bg-slate-950/45 text-white placeholder:text-slate-500 transition-all duration-200"
                 />
               </div>
 
@@ -359,10 +359,10 @@ export function Contact() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full rounded-full bg-gradient-to-r from-sky-300 to-amber-200 py-6 text-base font-semibold text-slate-950"
+                className="btn-glow w-full rounded-full bg-gradient-to-r from-sky-300 to-amber-200 py-6 text-base font-semibold text-slate-950 transition-all hover:shadow-[0_18px_50px_rgba(125,211,252,0.25)]"
               >
                 <Send className="w-4 h-4" />
-                {isSubmitting ? "Sending..." : emailConfigured ? "Send message" : "Open mail fallback"}
+                {isSubmitting ? "Sending..." : "Send message"}
               </Button>
             </form>
           </motion.div>

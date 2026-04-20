@@ -92,8 +92,8 @@ export function About() {
               className="grid gap-4 sm:grid-cols-2"
             >
               {capabilities.map((item, index) => (
-                <div key={item.title} className="panel-surface card-hover p-6">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-300/22 to-amber-200/18">
+                <div key={item.title} className="group panel-surface card-hover p-6">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-300/22 to-amber-200/18 transition-transform duration-300 group-hover:scale-110">
                     <item.icon className="w-5 h-5 text-sky-200" />
                   </div>
                   <h3 className="mt-5 text-xl font-semibold text-white">{item.title}</h3>
@@ -122,7 +122,7 @@ export function About() {
                 {stack.map((item) => (
                   <span
                     key={item}
-                    className="rounded-full border border-white/10 bg-slate-950/50 px-4 py-2 text-sm text-slate-200"
+                    className="rounded-full border border-white/10 bg-slate-950/50 px-4 py-2 text-sm text-slate-200 transition-all duration-200 hover:border-white/20 hover:bg-white/8 hover:text-white cursor-default"
                   >
                     {item}
                   </span>

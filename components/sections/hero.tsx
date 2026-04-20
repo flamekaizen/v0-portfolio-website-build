@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 import { ArrowDown, ArrowRight, FileDown, Github, Linkedin, Mail, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -14,7 +15,42 @@ const proofPoints = [
 
 const focusAreas = ["AI systems", "Robotics", "Research engineering", "Premium frontend"]
 
+const typingPhrases = [
+  "AI, robotics, and product experiences",
+  "intelligent systems and interfaces",
+  "research-grade solutions",
+]
+
 export function Hero() {
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0)
+  const [displayText, setDisplayText] = useState("")
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  useEffect(() => {
+    const phrase = typingPhrases[currentPhraseIndex]
+    let timeout: ReturnType<typeof setTimeout>
+
+    if (!isDeleting && displayText === phrase) {
+      timeout = setTimeout(() => setIsDeleting(true), 2400)
+    } else if (isDeleting && displayText === "") {
+      setIsDeleting(false)
+      setCurrentPhraseIndex((prev) => (prev + 1) % typingPhrases.length)
+    } else {
+      timeout = setTimeout(
+        () => {
+          setDisplayText(
+            isDeleting
+              ? phrase.substring(0, displayText.length - 1)
+              : phrase.substring(0, displayText.length + 1),
+          )
+        },
+        isDeleting ? 30 : 60,
+      )
+    }
+
+    return () => clearTimeout(timeout)
+  }, [displayText, isDeleting, currentPhraseIndex])
+
   const scrollTo = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
@@ -42,8 +78,16 @@ export function Hero() {
 
             <div className="mt-7 space-y-6">
               <h1 className="section-heading max-w-4xl">
-                Engineering <span className="text-gradient">AI, robotics, and product experiences</span> that feel
-                launch-ready, not just research-ready.
+                Engineering{" "}
+                <span className="text-gradient">
+                  {displayText}
+                  <motion.span
+                    animate={{ opacity: [1, 0] }}
+                    transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+                    className="inline-block w-[3px] h-[0.85em] translate-y-[0.1em] ml-0.5 bg-sky-300"
+                  />
+                </span>{" "}
+                that feel launch-ready, not just research-ready.
               </h1>
               <p className="section-copy balance-text">
                 I&apos;m Rahul Kumar, an Electronics and Communication Engineering student at IIIT Bhagalpur. I build
@@ -53,13 +97,16 @@ export function Hero() {
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              {focusAreas.map((item) => (
-                <span
+              {focusAreas.map((item, i) => (
+                <motion.span
                   key={item}
-                  className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 backdrop-blur-md"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 + i * 0.08 }}
+                  className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 backdrop-blur-md transition-colors hover:border-white/20 hover:bg-white/8"
                 >
                   {item}
-                </span>
+                </motion.span>
               ))}
             </div>
 
@@ -68,13 +115,16 @@ export function Hero() {
                 "Clear research communication",
                 "Edge-first deployment thinking",
                 "Demo-ready prototype polish",
-              ].map((item) => (
-                <div
+              ].map((item, i) => (
+                <motion.div
                   key={item}
-                  className="rounded-[1.5rem] border border-white/10 bg-slate-950/55 p-4 text-sm text-slate-300"
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.5 + i * 0.08 }}
+                  className="rounded-[1.5rem] border border-white/10 bg-slate-950/55 p-4 text-sm text-slate-300 transition-colors hover:border-white/16 hover:bg-slate-950/70"
                 >
                   {item}
-                </div>
+                </motion.div>
               ))}
             </div>
 
@@ -82,7 +132,7 @@ export function Hero() {
               <Button
                 size="lg"
                 onClick={() => scrollTo("portfolio")}
-                className="rounded-full bg-gradient-to-r from-sky-300 to-amber-200 px-7 text-slate-950 shadow-[0_22px_60px_rgba(125,211,252,0.22)] transition-transform hover:-translate-y-0.5"
+                className="btn-glow rounded-full bg-gradient-to-r from-sky-300 to-amber-200 px-7 text-slate-950 shadow-[0_22px_60px_rgba(125,211,252,0.22)] transition-transform hover:-translate-y-0.5"
               >
                 View selected work
                 <ArrowRight className="w-4 h-4" />
@@ -109,31 +159,22 @@ export function Hero() {
             </div>
 
             <div className="mt-8 flex flex-wrap items-center gap-3 text-sm text-slate-300">
-              <a
-                href={siteConfig.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-colors hover:bg-white/10"
-              >
-                <Github className="w-4 h-4" />
-                GitHub
-              </a>
-              <a
-                href={siteConfig.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-colors hover:bg-white/10"
-              >
-                <Linkedin className="w-4 h-4" />
-                LinkedIn
-              </a>
-              <a
-                href={`mailto:${siteConfig.email}`}
-                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-colors hover:bg-white/10"
-              >
-                <Mail className="w-4 h-4" />
-                Email
-              </a>
+              {[
+                { icon: Github, label: "GitHub", href: siteConfig.github },
+                { icon: Linkedin, label: "LinkedIn", href: siteConfig.linkedin },
+                { icon: Mail, label: "Email", href: `mailto:${siteConfig.email}` },
+              ].map((link) => (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target={link.href.startsWith("http") ? "_blank" : undefined}
+                  rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className="group inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 transition-all hover:border-white/20 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(125,211,252,0.08)]"
+                >
+                  <link.icon className="w-4 h-4 transition-transform group-hover:scale-110" />
+                  {link.label}
+                </a>
+              ))}
             </div>
 
             <div className="mt-12 grid gap-4 sm:grid-cols-3">
@@ -143,7 +184,7 @@ export function Hero() {
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.18 + index * 0.12 }}
-                  className="panel-surface card-hover p-5"
+                  className="panel-surface card-hover gradient-border p-5"
                 >
                   <div className="text-3xl font-semibold text-white">{item.value}</div>
                   <p className="mt-2 text-sm leading-6 text-slate-300">{item.label}</p>
@@ -166,7 +207,7 @@ export function Hero() {
                   <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Research + Product Craft</p>
                 </div>
                 <span className="inline-flex items-center gap-2 rounded-full bg-emerald-400/12 px-3 py-1 text-xs font-medium text-emerald-200">
-                  <span className="h-2 w-2 rounded-full bg-emerald-300" />
+                  <span className="h-2 w-2 rounded-full bg-emerald-300 animate-pulse-dot" />
                   Available now
                 </span>
               </div>
@@ -202,10 +243,12 @@ export function Hero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 1 }}
           onClick={() => scrollTo("about")}
-          className="mx-auto hidden items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300 backdrop-blur-md transition-colors hover:bg-white/10 md:flex"
+          className="mx-auto hidden items-center gap-3 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-300 backdrop-blur-md transition-all hover:bg-white/10 hover:shadow-[0_0_20px_rgba(125,211,252,0.06)] md:flex"
         >
           Scroll for more
-          <ArrowDown className="w-4 h-4" />
+          <motion.span animate={{ y: [0, 4, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
+            <ArrowDown className="w-4 h-4" />
+          </motion.span>
         </motion.button>
       </div>
     </section>

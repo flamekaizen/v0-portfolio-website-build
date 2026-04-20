@@ -1,8 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef } from "react"
 import Image from "next/image"
-import { AnimatePresence, motion } from "framer-motion"
+import { AnimatePresence, motion, useMotionValue, useTransform } from "framer-motion"
 import { ArrowUpRight, ExternalLink, Github } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -55,6 +55,122 @@ const projects = [
   },
 ]
 
+function ProjectCard({ project, index }: { project: (typeof projects)[0]; index: number }) {
+  const cardRef = useRef<HTMLDivElement>(null)
+  const x = useMotionValue(0)
+  const y = useMotionValue(0)
+  const rotateX = useTransform(y, [-100, 100], [4, -4])
+  const rotateY = useTransform(x, [-100, 100], [-4, 4])
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!cardRef.current) return
+    const rect = cardRef.current.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    x.set(e.clientX - centerX)
+    y.set(e.clientY - centerY)
+  }
+
+  const handleMouseLeave = () => {
+    x.set(0)
+    y.set(0)
+  }
+
+  const [imageLoaded, setImageLoaded] = useState(false)
+
+  return (
+    <motion.article
+      ref={cardRef}
+      layout
+      initial={{ opacity: 0, y: 26 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: 20 }}
+      transition={{ duration: 0.45, delay: index * 0.06 }}
+      style={{ rotateX, rotateY, transformPerspective: 1000 }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      className="group panel-surface overflow-hidden transition-all duration-300 hover:border-white/16"
+    >
+      <div className="relative h-72 overflow-hidden">
+        {/* Skeleton loader */}
+        {!imageLoaded && (
+          <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 bg-[length:200%_100%]" />
+        )}
+        <Image
+          src={project.image}
+          alt={project.title}
+          fill
+          sizes="(max-width: 1024px) 100vw, 50vw"
+          className={`object-cover transition-all duration-700 group-hover:scale-105 ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+          onLoad={() => setImageLoaded(true)}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#07101d] via-[#07101d]/35 to-transparent" />
+        <div className="absolute inset-x-5 top-5 flex items-start justify-between gap-3">
+          <span className="rounded-full border border-white/10 bg-slate-950/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-sky-200 backdrop-blur-md">
+            {project.category}
+          </span>
+          <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs text-white/80 backdrop-blur-md">
+            Featured
+          </span>
+        </div>
+      </div>
+
+      <div className="space-y-6 p-6 sm:p-7">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h3 className="text-2xl font-semibold text-white">{project.title}</h3>
+            <p className="mt-3 text-sm leading-6 text-slate-300">{project.summary}</p>
+          </div>
+          <ArrowUpRight className="mt-1 w-5 h-5 shrink-0 text-slate-500 transition-all duration-300 group-hover:text-sky-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {project.metrics.map((metric) => (
+            <span
+              key={metric}
+              className="rounded-full border border-white/10 bg-gradient-to-r from-sky-300/14 to-amber-200/10 px-3 py-2 text-xs font-medium text-slate-100"
+            >
+              {metric}
+            </span>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          {project.stack.map((tech) => (
+            <span key={tech} className="rounded-full bg-slate-950/55 px-3 py-1.5 text-xs text-slate-300">
+              {tech}
+            </span>
+          ))}
+        </div>
+
+        <div className="flex flex-wrap gap-3">
+          <Button
+            variant="outline"
+            size="sm"
+            asChild
+            className="rounded-full border-white/12 bg-white/5 text-white hover:bg-white/10 transition-all"
+          >
+            <a href={project.github} target="_blank" rel="noopener noreferrer">
+              <Github className="w-4 h-4" />
+              Code
+            </a>
+          </Button>
+          <Button
+            size="sm"
+            asChild
+            className="btn-glow rounded-full bg-gradient-to-r from-sky-300 to-amber-200 text-slate-950"
+          >
+            <a href={project.live} target="_blank" rel="noopener noreferrer">
+              <ExternalLink className="w-4 h-4" />
+              Preview
+            </a>
+          </Button>
+        </div>
+      </div>
+    </motion.article>
+  )
+}
+
 export function Portfolio() {
   const [activeFilter, setActiveFilter] = useState("All")
 
@@ -98,7 +214,7 @@ export function Portfolio() {
                   { label: "Product-ready", value: "Interactive demos and dashboards" },
                   { label: "Technical polish", value: "Reliable, presentable systems" },
                 ].map((item) => (
-                  <div key={item.label} className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300">
+                  <div key={item.label} className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300 transition-colors hover:border-white/16 hover:bg-white/8">
                     <p className="text-xs uppercase tracking-[0.2em] text-slate-400">{item.label}</p>
                     <p className="mt-3 font-semibold text-white">{item.value}</p>
                   </div>
@@ -117,8 +233,10 @@ export function Portfolio() {
                 <button
                   key={filter}
                   onClick={() => setActiveFilter(filter)}
-                  className={`rounded-full px-4 py-2 text-sm transition-colors ${
-                    activeFilter === filter ? "bg-white text-slate-950" : "text-slate-300 hover:text-white"
+                  className={`rounded-full px-4 py-2 text-sm transition-all duration-200 ${
+                    activeFilter === filter
+                      ? "bg-white text-slate-950 shadow-[0_0_20px_rgba(255,255,255,0.08)]"
+                      : "text-slate-300 hover:text-white hover:bg-white/5"
                   }`}
                 >
                   {filter}
@@ -131,87 +249,7 @@ export function Portfolio() {
         <motion.div layout className="grid gap-6 lg:grid-cols-2">
           <AnimatePresence mode="popLayout">
             {filteredProjects.map((project, index) => (
-              <motion.article
-                layout
-                key={project.title}
-                initial={{ opacity: 0, y: 26 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 20 }}
-                transition={{ duration: 0.45, delay: index * 0.06 }}
-                className="panel-surface card-hover overflow-hidden"
-              >
-                <div className="relative h-72 overflow-hidden">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    className="object-cover transition-transform duration-700 hover:scale-105"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#07101d] via-[#07101d]/35 to-transparent" />
-                  <div className="absolute inset-x-5 top-5 flex items-start justify-between gap-3">
-                    <span className="rounded-full border border-white/10 bg-slate-950/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-sky-200 backdrop-blur-md">
-                      {project.category}
-                    </span>
-                    <span className="rounded-full border border-white/10 bg-white/10 px-3 py-1 text-xs text-white/80 backdrop-blur-md">
-                      Featured
-                    </span>
-                  </div>
-                </div>
-
-                <div className="space-y-6 p-6 sm:p-7">
-                  <div className="flex items-start justify-between gap-4">
-                    <div>
-                      <h3 className="text-2xl font-semibold text-white">{project.title}</h3>
-                      <p className="mt-3 text-sm leading-6 text-slate-300">{project.summary}</p>
-                    </div>
-                    <ArrowUpRight className="mt-1 w-5 h-5 shrink-0 text-slate-500" />
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    {project.metrics.map((metric) => (
-                      <span
-                        key={metric}
-                        className="rounded-full border border-white/10 bg-gradient-to-r from-sky-300/14 to-amber-200/10 px-3 py-2 text-xs font-medium text-slate-100"
-                      >
-                        {metric}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex flex-wrap gap-2">
-                    {project.stack.map((tech) => (
-                      <span key={tech} className="rounded-full bg-slate-950/55 px-3 py-1.5 text-xs text-slate-300">
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="flex flex-wrap gap-3">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      asChild
-                      className="rounded-full border-white/12 bg-white/5 text-white hover:bg-white/10"
-                    >
-                      <a href={project.github} target="_blank" rel="noopener noreferrer">
-                        <Github className="w-4 h-4" />
-                        Code
-                      </a>
-                    </Button>
-                    <Button
-                      size="sm"
-                      asChild
-                      className="rounded-full bg-gradient-to-r from-sky-300 to-amber-200 text-slate-950"
-                    >
-                      <a href={project.live} target="_blank" rel="noopener noreferrer">
-                        <ExternalLink className="w-4 h-4" />
-                        Preview
-                      </a>
-                    </Button>
-                  </div>
-                </div>
-              </motion.article>
+              <ProjectCard key={project.title} project={project} index={index} />
             ))}
           </AnimatePresence>
         </motion.div>

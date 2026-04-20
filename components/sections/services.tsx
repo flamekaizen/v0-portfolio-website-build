@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Brain, LayoutDashboard, MailCheck, Rocket, SatelliteDish } from "lucide-react"
+import { Brain, FileText, LayoutDashboard, Rocket, SatelliteDish } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 const services = [
@@ -10,30 +10,35 @@ const services = [
     title: "AI and vision prototypes",
     description: "From data prep to model evaluation and demo pipelines for computer vision or applied ML use cases.",
     points: ["Rapid experimentation", "Model benchmarking", "Demo-ready outputs"],
+    accent: "from-cyan-400/25 to-blue-500/20",
   },
   {
     icon: SatelliteDish,
     title: "Robotics and autonomy builds",
     description: "Perception, navigation, and system integration work across embedded devices, sensors, and control loops.",
     points: ["ROS2 workflows", "Hardware-aware implementation", "Simulation to real-world translation"],
+    accent: "from-violet-400/25 to-purple-500/20",
   },
   {
     icon: LayoutDashboard,
     title: "Product UI and technical storytelling",
     description: "Interfaces and dashboards that make advanced systems understandable to mentors, judges, teams, and users.",
     points: ["Clear interaction design", "Premium presentation quality", "Responsive frontend builds"],
+    accent: "from-amber-400/25 to-orange-500/20",
   },
   {
-    icon: MailCheck,
-    title: "Lead capture and EmailJS workflows",
-    description: "Professional contact systems with EmailJS integration, qualified inquiry fields, fallback handling, and polished form UX.",
-    points: ["EmailJS setup", "Lead qualification", "Reliable contact pathways"],
+    icon: FileText,
+    title: "Technical documentation and demos",
+    description: "Turning complex engineering work into clear case studies, live demos, and stakeholder-ready presentations.",
+    points: ["Structured write-ups", "Live demo preparation", "Presentation design"],
+    accent: "from-emerald-400/25 to-teal-500/20",
   },
   {
     icon: Rocket,
     title: "Research to demo delivery",
     description: "Converting technical explorations into clean case studies, presentations, and portfolio-ready demonstrations.",
     points: ["Structured communication", "Project framing", "Execution polish"],
+    accent: "from-rose-400/25 to-pink-500/20",
   },
 ]
 
@@ -74,10 +79,10 @@ export function Services() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.55, delay: index * 0.08 }}
               viewport={{ once: true, amount: 0.25 }}
-              className="panel-surface card-hover h-full p-6"
+              className="group panel-surface card-hover h-full p-6"
             >
               <div className="flex items-start justify-between gap-4">
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-sky-300/20 to-amber-200/16">
+                <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${service.accent} transition-transform duration-300 group-hover:scale-110`}>
                   <service.icon className="w-5 h-5 text-sky-200" />
                 </div>
                 <span className="text-sm font-semibold text-slate-500">0{index + 1}</span>
@@ -86,7 +91,7 @@ export function Services() {
               <p className="mt-3 text-sm leading-6 text-slate-300">{service.description}</p>
               <ul className="mt-5 space-y-2 text-sm text-slate-200">
                 {service.points.map((point) => (
-                  <li key={point} className="rounded-full border border-white/8 bg-white/5 px-3 py-2">
+                  <li key={point} className="rounded-full border border-white/8 bg-white/5 px-3 py-2 transition-colors group-hover:border-white/14 group-hover:bg-white/8">
                     {point}
                   </li>
                 ))}
@@ -108,7 +113,7 @@ export function Services() {
           </div>
           <Button
             onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth", block: "start" })}
-            className="rounded-full bg-gradient-to-r from-sky-300 to-amber-200 px-6 text-slate-950"
+            className="rounded-full bg-gradient-to-r from-sky-300 to-amber-200 px-6 text-slate-950 shadow-[0_14px_40px_rgba(125,211,252,0.18)] transition-all hover:shadow-[0_18px_50px_rgba(125,211,252,0.28)] hover:-translate-y-0.5"
           >
             Start a conversation
           </Button>
